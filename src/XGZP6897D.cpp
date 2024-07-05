@@ -1,4 +1,4 @@
-#include "xgzp6897D.h"
+#include "XGZP6897D.h"
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "stdio.h"

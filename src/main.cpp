@@ -7,7 +7,7 @@
 #include "BMP280.h"
 #include "ms4525.h"
 #include "sdp3x.h"
-#include "xgzp6897d.h"
+#include "XGZP6897D.h"
 #include "vario.h"
 #include "voltage.h"
 #include "gps.h"
