@@ -581,6 +581,7 @@ class Ui(QtWidgets.QMainWindow):
         self.cbI2c.setChecked( config.getboolean('oXs', 'cbI2c'))
         self.comboBoxScl.setCurrentText(config['oXs']['Scl'])
         self.comboBoxSda.setCurrentText(config['oXs']['Sda'])
+        self.cbVspeedSource.setChecked( config.getboolean('oXs', 'cbVspeedSource'))
         self.comboBoxVspeedSource.setCurrentText(config['oXs']['ACC'])
 
         self.cbRpm.setChecked( config.getboolean('oXs', 'cbRpm'))
@@ -650,19 +651,25 @@ class Ui(QtWidgets.QMainWindow):
         self.comboBoxCh16.setCurrentText(config['oXs']['C16'])
 
         self.sbPwmFrequency.setValue(config.getint('oXs','pwmhz'))
+        self.cbInvertedLed.setChecked( config.getboolean('oXs', 'led'))
         self.comboBoxLedGpio.setCurrentText(config['oXs']['rgb'])
+        self.cbVcc.setChecked( config.getboolean('oXs', 'cbvcc'))
         self.comboBoxVcc.setCurrentText(config['oXs']['High'])
+        self.cbGrnd.setChecked( config.getboolean('oXs', 'cbgrnd'))
         self.comboBoxGrnd.setCurrentText(config['oXs']['low'])
 
+        self.cbLocator.setChecked( config.getboolean('oXs', 'cblocator'))
         self.comboBoxSpiCs.setCurrentText(config['oXs']['spi_cs'])
         self.comboBoxSpiSck.setCurrentText(config['oXs']['spi_sck'])
         self.comboBoxSpiMosi.setCurrentText(config['oXs']['spi_mosi'])
         self.comboBoxSpiMiso.setCurrentText(config['oXs']['spi_miso'])
         self.comboBoxSpiBusy.setCurrentText(config['oXs']['spi_busy'])
 
+        self.cbLogger.setChecked( config.getboolean('oXs', 'cblogger'))
         self.comboBoxLogger.setCurrentText(config['oXs']['log'])
         self.doubleSpinBoxLoggerBaudrate.setValue(config.getint('oXs','logbaud'))
 
+        self.cbGyro.setChecked( config.getboolean('oXs', 'cbgyro'))
         self.comboBoxGyroMode.setCurrentText(config['oXs']['GMG'])
         self.comboBoxGyroAilStick.setCurrentText(config['oXs']['GSA'])
         self.comboBoxGyroElvStick.setCurrentText(config['oXs']['GSE'])
