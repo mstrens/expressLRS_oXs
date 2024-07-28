@@ -18,7 +18,7 @@ from serial.tools.list_ports import comports
 from PyQt6.QtCore import QIODeviceBase , QByteArray 
 from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot , QTimer
 
-version = "   (version 0.0.3)"
+version = "   (version 0.0.4)"
 # TO DO
 #add more checks ()
 #perform checks when command is generated and save is done
@@ -321,6 +321,7 @@ class Ui(QtWidgets.QMainWindow):
         if "C15 =" in self.strToParse : self.cbCh15.setChecked(True)
         if "C16 =" in self.strToParse : self.cbCh16.setChecked(True)
         
+        if "LED = I" in self.strToParse : self.cbInvertedLed.setChecked(True)
         if "ACC =" in self.strToParse : self.cbVspeedSource.setChecked(True)
         if "GMG =" in self.strToParse : self.cbGyro.setChecked(True)
         if "HIGH =" in self.strToParse : self.cbVcc.setChecked(True)
@@ -655,7 +656,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.sbPwmFrequency.setValue(config.getint('oXs','pwmhz'))
         
-        self.cbInvertedLed.setChecked( str(config['oXs']['led']) == "I")
+        self.cbInvertedLed.setChecked( config.getboolean('oXs','cbinvertedled'))
         self.comboBoxLedGpio.setCurrentText(config['oXs']['rgb'])
         self.cbVcc.setChecked( config.getboolean('oXs', 'cbvcc'))
         self.comboBoxVcc.setCurrentText(config['oXs']['High'])
@@ -688,7 +689,7 @@ class Ui(QtWidgets.QMainWindow):
         
 
 
-    def saveAsConfig(self):
+    def saveAsConfig(self): #save the ui in a .ini file
         fcontent = "this is the file content"
         dialog = QFileDialog(self)
         dialog.setFileMode(QFileDialog.FileMode.AnyFile)
@@ -790,7 +791,7 @@ class Ui(QtWidgets.QMainWindow):
             ms["C16"] = self.comboBoxCh16.currentText()
             
             ms['pwmhz'] = str(self.sbPwmFrequency.value())
-            ms['led'] = str(self.cbInvertedLed.isChecked())
+            ms['cbInvertedLed'] = str(self.cbInvertedLed.isChecked())
             ms['rgb'] =  self.comboBoxLedGpio.currentText()
             ms['cbVcc'] = str(self.cbVcc.isChecked())
             ms['high'] = self.comboBoxVcc.currentText()
