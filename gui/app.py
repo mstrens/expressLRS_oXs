@@ -18,7 +18,7 @@ from serial.tools.list_ports import comports
 from PyQt6.QtCore import QIODeviceBase , QByteArray 
 from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot , QTimer
 
-version = "   (version 0.0.2)"
+version = "   (version 0.0.3)"
 # TO DO
 #add more checks ()
 #perform checks when command is generated and save is done
@@ -28,6 +28,9 @@ version = "   (version 0.0.2)"
 #add serial commands (failsafe, ...)
 #add gps type
 #add the ability to upload the current config from oXs
+#PIDN = 500 0 500 500 0 500 500 0 500
+#PIDH = 500 500 500 500 500 500 500 500 500
+#PIDS = 500 0 500 500 0 500 500 0 500
 
 BLANK_STRING = "N/A"
 
@@ -651,7 +654,8 @@ class Ui(QtWidgets.QMainWindow):
         self.comboBoxCh16.setCurrentText(config['oXs']['C16'])
 
         self.sbPwmFrequency.setValue(config.getint('oXs','pwmhz'))
-        self.cbInvertedLed.setChecked( config.getboolean('oXs', 'led'))
+        
+        self.cbInvertedLed.setChecked( str(config['oXs']['led']) == "I")
         self.comboBoxLedGpio.setCurrentText(config['oXs']['rgb'])
         self.cbVcc.setChecked( config.getboolean('oXs', 'cbvcc'))
         self.comboBoxVcc.setCurrentText(config['oXs']['High'])
