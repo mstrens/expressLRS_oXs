@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1124</width>
-    <height>762</height>
+    <height>811</height>
    </rect>
   </property>
   <property name="palette">
@@ -484,48 +484,22 @@
        <attribute name="title">
         <string>Config</string>
        </attribute>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QTextEdit" name="textEdit">
         <property name="geometry">
          <rect>
-          <x>210</x>
-          <y>80</y>
-          <width>231</width>
-          <height>271</height>
+          <x>60</x>
+          <y>60</y>
+          <width>991</width>
+          <height>521</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QPushButton" name="pushButtonLoadConfig">
-           <property name="text">
-            <string>Load config from pc</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonLoadConfigFromOxs">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Load config from oXs</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonSaveAsConfig">
-           <property name="text">
-            <string>Save config to pc</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonReset">
-           <property name="text">
-            <string>Reset the config</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Times New Roman'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Here there shoud be some text providing explanations&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="receiverTab">
@@ -8429,23 +8403,10 @@
         <property name="geometry">
          <rect>
           <x>170</x>
-          <y>50</y>
+          <y>20</y>
           <width>241</width>
           <height>31</height>
          </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_7">
-        <property name="geometry">
-         <rect>
-          <x>170</x>
-          <y>20</y>
-          <width>81</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Serial port</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonSerialConnect">
@@ -8454,10 +8415,10 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>480</x>
-          <y>50</y>
+          <x>430</x>
+          <y>20</y>
           <width>93</width>
-          <height>28</height>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
@@ -8470,8 +8431,8 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>800</x>
-          <y>50</y>
+          <x>760</x>
+          <y>20</y>
           <width>121</width>
           <height>28</height>
          </rect>
@@ -8499,21 +8460,21 @@
        <widget class="QPushButton" name="pushButtonSearchSerialPort">
         <property name="geometry">
          <rect>
-          <x>40</x>
-          <y>50</y>
-          <width>93</width>
+          <x>10</x>
+          <y>20</y>
+          <width>151</width>
           <height>28</height>
          </rect>
         </property>
         <property name="text">
-         <string>Search ports</string>
+         <string>Search serial ports</string>
         </property>
        </widget>
        <widget class="QLabel" name="labelSerialStatus">
         <property name="geometry">
          <rect>
-          <x>590</x>
-          <y>60</y>
+          <x>540</x>
+          <y>30</y>
           <width>131</width>
           <height>16</height>
          </rect>
@@ -8525,19 +8486,6 @@
         </property>
         <property name="text">
          <string>Disconnected</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_18">
-        <property name="geometry">
-         <rect>
-          <x>600</x>
-          <y>20</y>
-          <width>55</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Status</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonClearSerialSend">
@@ -8585,7 +8533,7 @@
           <x>33</x>
           <y>320</y>
           <width>1041</width>
-          <height>321</height>
+          <height>371</height>
          </rect>
         </property>
         <property name="font">
@@ -8635,7 +8583,7 @@
           <x>250</x>
           <y>120</y>
           <width>341</width>
-          <height>22</height>
+          <height>31</height>
          </rect>
         </property>
        </widget>
@@ -8653,6 +8601,87 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonLoadConfig">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>70</y>
+          <width>171</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Load config from pc</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonLoadConfigFromOxs">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>70</y>
+          <width>171</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Load config from oXs</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonSaveAsConfig">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>70</y>
+          <width>151</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Save config to pc</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonReset">
+        <property name="geometry">
+         <rect>
+          <x>930</x>
+          <y>70</y>
+          <width>131</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Reset the config</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonSaveConfigToOxs">
+        <property name="geometry">
+         <rect>
+          <x>680</x>
+          <y>70</y>
+          <width>161</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Save config to oXs</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>300</y>
+          <width>171</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Messages from oXs</string>
         </property>
        </widget>
       </widget>

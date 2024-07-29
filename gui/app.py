@@ -18,7 +18,8 @@ from serial.tools.list_ports import comports
 from PyQt6.QtCore import QIODeviceBase , QByteArray 
 from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot , QTimer
 
-version = "   (version 0.0.4)"
+version = "   (version 0.0.5)"
+
 # TO DO
 #add more checks ()
 #perform checks when command is generated and save is done
@@ -42,8 +43,8 @@ escName = ["Hobbywing v4", "BlHeli", "Jeti" , "Kontronik" , "ZTW mantis"]
 gpsCode = ["U", "E", "C"]
 gpsName = ["Ublox configured by oXs", "Ublox configured Externally", "CADIS"]
 cmdCode = ["", "?", "SAVE", "DUMP", "SETFAILSAFE", "MPUCAL=A", "MPUCLA=C", "MPUORI=H", "MPUORI=V" , "FV", "FVP", "FVN", "PWM"]
-cmdName = ["Display current config (ENTER)", "Help (?)", "Save current oXs config (SAVE)", \
-           "Dump current oXs config (DUMP)","Set failsafe with current PWM (SETFAILSAFE)", \
+cmdName = ["Display oXs setup (ENTER)", "Help (?)", "Save oXs setup (SAVE)", \
+           "Dump oXs setup (DUMP)","Set failsafe with current PWM (SETFAILSAFE)", \
            "Calibrate Accelerometers (MPUCAL=A)" , "Calibrate Gyro offsets (MPUCAL=G)", \
            "Set horizontal MPU orientation (MPUORI=H)" , "Set vertical MPU orientation (MPUORI=V)" , \
            "Display current field values (FV)", "Set all dummy positieve field values (FVP)" , \
@@ -177,7 +178,8 @@ class Ui(QtWidgets.QMainWindow):
 
         self.pushButtonCheckConfig.clicked.connect(self.checkConfig)
         self.pushButtonLoadConfig.clicked.connect(self.loadConfig)
-        self.pushButtonSaveAsConfig.clicked.connect(self.saveAsConfig)
+        self.pushButtonSaveAsConfig.clicked.connect(self.saveConfigToPc)
+        self.pushButtonSaveConfigToOxs.clicked.connect(self.saveConfigToOxs)
         self.pushButtonSearchSerialPort.clicked.connect(self.fill_ports_info)
         self.pushButtonSerialConnect.clicked.connect(self.serialConnect)
         self.pushButtonSerialDisconnect.clicked.connect(self.serialDisconnect)
@@ -458,8 +460,26 @@ class Ui(QtWidgets.QMainWindow):
         self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
         self.pushButtonLoadConfigFromOxs.setEnabled(False)
 
+    def saveConfigToOxs(self):
+        cmd = self.generateUsbCommand() + " ; SAVE\r\n"
+        if  not self.m_serial.isOpen():
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error!")
+            dlg.setText("Usb connection with oXs is lost")
+            button = dlg.exec()
+            self.serialDisconnect()
+            print("serial is closed while writing")
+            return
+        self.plainTextEditSerialToOxs.clear()
+        self.plainTextEditSerialToOxs.appendPlainText(cmd)
+        self.m_serial.write(str(cmd).encode('utf-8'))
 
     def createUsbCommand(self):
+        cmd = self.generateUsbCommand()
+        self.plainTextEditSerialToOxs.clear()
+        self.plainTextEditSerialToOxs.appendPlainText(cmd)
+
+    def generateUsbCommand(self):    
         cmd = "DEFAULT"
         cmd += "; PROTOCOL=" + protocolsCode[self.comboBoxProtocol.currentIndex()]
         if self.comboBoxProtocol.currentText() == "ELRS":
@@ -552,9 +572,8 @@ class Ui(QtWidgets.QMainWindow):
             cmd += "; GRE =" + gyroStickRotateEnableCode[self.comboBoxGyroStickRotateEnable.currentIndex()]
             cmd += "; GST =" + gyroStabModeCode[self.comboBoxGyroStabMode.currentIndex()]
 
-        self.plainTextEditSerialToOxs.clear()
-        self.plainTextEditSerialToOxs.appendPlainText(cmd)
-        #print(cmd) 
+        #print(cmd)
+        return cmd
         
     def loadConfig(self):   #load from a file
         fname = QFileDialog.getOpenFileName(self, 'Select a file', None, "ini(*.ini)")
@@ -689,7 +708,7 @@ class Ui(QtWidgets.QMainWindow):
         
 
 
-    def saveAsConfig(self): #save the ui in a .ini file
+    def saveConfigToPc(self): #save the ui in a .ini file
         fcontent = "this is the file content"
         dialog = QFileDialog(self)
         dialog.setFileMode(QFileDialog.FileMode.AnyFile)
@@ -699,6 +718,7 @@ class Ui(QtWidgets.QMainWindow):
         #dialog.setViewMode(QFileDialog.Detail)
         if dialog.exec():
             fileName = dialog.selectedFiles()
+            print("fileName[0]=")
             print(fileName[0])
 
         #options = QFileDialog.options()
@@ -706,6 +726,7 @@ class Ui(QtWidgets.QMainWindow):
         #fileName, _ = QFileDialog.getSaveFileName(self, 
         #    "Save File", "", "Ini Files(*.ini);;ini Files(*.ini)", options = options)
         if fileName[0]:
+            print("trying to save")
             config = configparser.ConfigParser()
             config['oXs'] = {}
             ms = config['oXs']
@@ -825,7 +846,7 @@ class Ui(QtWidgets.QMainWindow):
             with open(fileName[0], 'w') as configfile:
                 config.write(configfile)
             
-            print("file is saved")
+            #print("file is saved")
     
     
     def checkConfig(self):
