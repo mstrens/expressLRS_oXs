@@ -478,7 +478,7 @@
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>8</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -8447,10 +8447,10 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="geometry">
          <rect>
-          <x>380</x>
-          <y>160</y>
+          <x>530</x>
+          <y>120</y>
           <width>281</width>
-          <height>28</height>
+          <height>71</height>
          </rect>
         </property>
         <property name="text">
@@ -8492,7 +8492,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>840</x>
-          <y>170</y>
+          <y>140</y>
           <width>231</width>
           <height>28</height>
          </rect>
@@ -8517,21 +8517,21 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="pushButtonCreateUsbCommand">
         <property name="geometry">
          <rect>
-          <x>40</x>
-          <y>160</y>
-          <width>301</width>
-          <height>28</height>
+          <x>30</x>
+          <y>117</y>
+          <width>471</width>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Create usb command from current config</string>
+         <string>Fill edit box with all usb commands based on current gui config</string>
         </property>
        </widget>
        <widget class="QPlainTextEdit" name="plainTextEditSerialFromOxs">
         <property name="geometry">
          <rect>
-          <x>33</x>
-          <y>320</y>
+          <x>40</x>
+          <y>310</y>
           <width>1041</width>
           <height>371</height>
          </rect>
@@ -8561,27 +8561,11 @@ p, li { white-space: pre-wrap; }
          <string extracomment="Enter here a manual command to send to oXs"/>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButtonSendSelectedCmdToOxs">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>600</x>
-          <y>120</y>
-          <width>191</width>
-          <height>28</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Send selected cmd to oXs</string>
-        </property>
-       </widget>
        <widget class="QComboBox" name="comboBoxSendSelectedCmdToOxs">
         <property name="geometry">
          <rect>
-          <x>250</x>
-          <y>120</y>
+          <x>160</x>
+          <y>160</y>
           <width>341</width>
           <height>31</height>
          </rect>
@@ -8590,14 +8574,14 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_20">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>120</y>
+          <x>-40</x>
+          <y>170</y>
           <width>191</width>
           <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>Select a cmd to send to oXs</string>
+         <string>Copy a cmd to edit box</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8635,7 +8619,7 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="pushButtonSaveAsConfig">
         <property name="geometry">
          <rect>
-          <x>510</x>
+          <x>410</x>
           <y>70</y>
           <width>151</width>
           <height>31</height>
@@ -8661,14 +8645,14 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="pushButtonSaveConfigToOxs">
         <property name="geometry">
          <rect>
-          <x>680</x>
+          <x>580</x>
           <y>70</y>
-          <width>161</width>
+          <width>291</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Save config to oXs</string>
+         <string>Upload config to oXs (but not yet save it) </string>
         </property>
        </widget>
        <widget class="QLabel" name="label_7">

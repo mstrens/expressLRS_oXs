@@ -18,7 +18,7 @@ from serial.tools.list_ports import comports
 from PyQt6.QtCore import QIODeviceBase , QByteArray 
 from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot , QTimer
 
-version = "   (version 0.0.5)"
+version = "   (version 0.0.6)"
 
 # TO DO
 #add more checks ()
@@ -43,7 +43,7 @@ escName = ["Hobbywing v4", "BlHeli", "Jeti" , "Kontronik" , "ZTW mantis"]
 gpsCode = ["U", "E", "C"]
 gpsName = ["Ublox configured by oXs", "Ublox configured Externally", "CADIS"]
 cmdCode = ["", "?", "SAVE", "DUMP", "SETFAILSAFE", "MPUCAL=A", "MPUCLA=C", "MPUORI=H", "MPUORI=V" , "FV", "FVP", "FVN", "PWM"]
-cmdName = ["Display oXs setup (ENTER)", "Help (?)", "Save oXs setup (SAVE)", \
+cmdName = ["Display oXs setup in msg box (ENTER)", "Help (?)", "Save oXs setup (SAVE)", \
            "Dump oXs setup (DUMP)","Set failsafe with current PWM (SETFAILSAFE)", \
            "Calibrate Accelerometers (MPUCAL=A)" , "Calibrate Gyro offsets (MPUCAL=G)", \
            "Set horizontal MPU orientation (MPUORI=H)" , "Set vertical MPU orientation (MPUORI=V)" , \
@@ -190,7 +190,8 @@ class Ui(QtWidgets.QMainWindow):
         self.pushButtonCreateUsbCommand.clicked.connect(self.createUsbCommand)
         self.pushButtonLoadConfigFromOxs.clicked.connect(self.loadConfigFromOxs)
         self.pushButtonReset.clicked.connect(self.resetConfig)
-        self.pushButtonSendSelectedCmdToOxs.clicked.connect(self.sendSelectedCmdToOxs)
+        #self.pushButtonSendSelectedCmdToOxs.clicked.connect(self.sendSelectedCmdToOxs)
+        self.comboBoxSendSelectedCmdToOxs.activated.connect(self.fillEditWithCmd)
         
         self.m_serial = QSerialPort(self)
         self.m_serial.errorOccurred.connect(self.handle_error)
@@ -217,6 +218,10 @@ class Ui(QtWidgets.QMainWindow):
         # set the title
         self.setWindowTitle("Graphical user interface for oXs on RP2040 " + version)
         self.show()
+
+    def fillEditWithCmd(self, index):
+        self.plainTextEditSerialToOxs.clear()
+        self.plainTextEditSerialToOxs.appendPlainText(cmdCode[index])
         
     def resetConfig(self):
         config = configparser.ConfigParser()
@@ -224,15 +229,15 @@ class Ui(QtWidgets.QMainWindow):
         config.read_string(defaultConfig + "[oXs]")
         self.fillUi(config)        
 
-    def sendSelectedCmdToOxs(self):
-        if not self.m_serial.isOpen():
-            dlg = QMessageBox(self)
-            dlg.setWindowTitle("Error!")
-            dlg.setText("No usb connection with oXs (click first connect on Usb commands tab)")
-            button = dlg.exec()
-            self.serialDisconnect()
-            return
-        self.m_serial.write((cmdCode[self.comboBoxSendSelectedCmdToOxs.currentIndex()] + "\r\n").encode('utf-8'))
+    #def sendSelectedCmdToOxs(self):
+    #    if not self.m_serial.isOpen():
+    #        dlg = QMessageBox(self)
+    #        dlg.setWindowTitle("Error!")
+    #        dlg.setText("No usb connection with oXs (click first connect on Usb commands tab)")
+    #        button = dlg.exec()
+    #        self.serialDisconnect()
+    #        return
+    #    self.m_serial.write((cmdCode[self.comboBoxSendSelectedCmdToOxs.currentIndex()] + "\r\n").encode('utf-8'))
 
     def loadConfigFromOxs(self):
         if not self.m_serial.isOpen():
@@ -388,6 +393,7 @@ class Ui(QtWidgets.QMainWindow):
     @pyqtSlot()
     def clearCmdToSend(self):
         self.plainTextEditSerialToOxs.clear()
+        #self.plainTextEditSerialToOxs.appendPlainText(cmd)
 
     def clearSerialFromOxs(self):
         self.plainTextEditSerialFromOxs.clear()

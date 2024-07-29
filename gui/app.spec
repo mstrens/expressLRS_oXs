@@ -5,7 +5,7 @@ a = Analysis(
     ['app.py'],
     pathex=[],
     binaries=[],
-    datas=[('rp2040.jpg', '.'), ('oxs.ui', '.')],
+    datas=[('oXs.ui', '.'), ('rp2040.jpg', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
