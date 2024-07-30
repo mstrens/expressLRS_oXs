@@ -18,7 +18,7 @@ from serial.tools.list_ports import comports
 from PyQt6.QtCore import QIODeviceBase , QByteArray 
 from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot , QTimer
 
-version = "   (version 0.0.6)"
+version = "   (version 0.0.7)"
 
 # TO DO
 #add more checks ()
@@ -42,9 +42,8 @@ escCode = ["HW4",  "BLH",  "JETI", "KON", "ZTW1"]
 escName = ["Hobbywing v4", "BlHeli", "Jeti" , "Kontronik" , "ZTW mantis"]
 gpsCode = ["U", "E", "C"]
 gpsName = ["Ublox configured by oXs", "Ublox configured Externally", "CADIS"]
-cmdCode = ["", "?", "SAVE", "DUMP", "SETFAILSAFE", "MPUCAL=A", "MPUCLA=C", "MPUORI=H", "MPUORI=V" , "FV", "FVP", "FVN", "PWM"]
-cmdName = ["Display oXs setup in msg box (ENTER)", "Help (?)", "Save oXs setup (SAVE)", \
-           "Dump oXs setup (DUMP)","Set failsafe with current PWM (SETFAILSAFE)", \
+cmdCode = ["?", "DUMP", "SETFAILSAFE", "MPUCAL=A", "MPUCLA=C", "MPUORI=H", "MPUORI=V" , "FV", "FVP", "FVN", "PWM"]
+cmdName = ["Help (?)", "Dump oXs setup (DUMP)","Set failsafe with current PWM (SETFAILSAFE)", \
            "Calibrate Accelerometers (MPUCAL=A)" , "Calibrate Gyro offsets (MPUCAL=G)", \
            "Set horizontal MPU orientation (MPUORI=H)" , "Set vertical MPU orientation (MPUORI=V)" , \
            "Display current field values (FV)", "Set all dummy positieve field values (FVP)" , \
@@ -179,7 +178,7 @@ class Ui(QtWidgets.QMainWindow):
         self.pushButtonCheckConfig.clicked.connect(self.checkConfig)
         self.pushButtonLoadConfig.clicked.connect(self.loadConfig)
         self.pushButtonSaveAsConfig.clicked.connect(self.saveConfigToPc)
-        self.pushButtonSaveConfigToOxs.clicked.connect(self.saveConfigToOxs)
+        self.pushButtonUploadConfigInOxs.clicked.connect(self.uploadConfigInOxs)
         self.pushButtonSearchSerialPort.clicked.connect(self.fill_ports_info)
         self.pushButtonSerialConnect.clicked.connect(self.serialConnect)
         self.pushButtonSerialDisconnect.clicked.connect(self.serialDisconnect)
@@ -187,12 +186,15 @@ class Ui(QtWidgets.QMainWindow):
         self.pushButtonClearSerialSend.clicked.connect(self.clearCmdToSend)
         self.comboBoxSerialPort.currentIndexChanged.connect(self.handleSerialPort)
         self.pushButtonClearSerialFromOxs.clicked.connect(self.clearSerialFromOxs)
-        self.pushButtonCreateUsbCommand.clicked.connect(self.createUsbCommand)
+        #self.pushButtonCreateUsbCommand.clicked.connect(self.createUsbCommand)
         self.pushButtonLoadConfigFromOxs.clicked.connect(self.loadConfigFromOxs)
         self.pushButtonReset.clicked.connect(self.resetConfig)
         #self.pushButtonSendSelectedCmdToOxs.clicked.connect(self.sendSelectedCmdToOxs)
-        self.comboBoxSendSelectedCmdToOxs.activated.connect(self.fillEditWithCmd)
-        
+        #self.comboBoxSendSelectedCmdToOxs.activated.connect(self.fillEditWithCmd)
+        self.comboBoxSendSelectedCmdToOxs.activated.connect(self.sendSelectedCmdToOxs)
+        self.pushButtonAskOxsToSave.clicked.connect(self.askOxsToSave)
+        self.pushButtonGetOxsConfig.clicked.connect(self.getOxsConfig)
+
         self.m_serial = QSerialPort(self)
         self.m_serial.errorOccurred.connect(self.handle_error)
         self.m_serial.readyRead.connect(self.read_data)   
@@ -223,21 +225,51 @@ class Ui(QtWidgets.QMainWindow):
         self.plainTextEditSerialToOxs.clear()
         self.plainTextEditSerialToOxs.appendPlainText(cmdCode[index])
         
+    def askOxsToSave(self):
+        if  not self.m_serial.isOpen():
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error!")
+            dlg.setText("Usb connection with oXs is lost")
+            button = dlg.exec()
+            self.serialDisconnect()
+            print("serial is closed while trying to send SAVE cmd")
+            return
+        cmd = "SAVE\n\r"
+        self.plainTextEditSerialToOxs.clear()
+        self.plainTextEditSerialToOxs.appendPlainText(cmd)
+        self.m_serial.write(str(cmd).encode('utf-8'))
+
+    def getOxsConfig(self):
+        if  not self.m_serial.isOpen():
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error!")
+            dlg.setText("Usb connection with oXs is lost")
+            button = dlg.exec()
+            self.serialDisconnect()
+            print("serial is closed while trying to get oXs config")
+            return
+        cmd = "\n\r"
+        self.plainTextEditSerialToOxs.clear()
+        self.plainTextEditSerialToOxs.appendPlainText(cmd)
+        self.m_serial.write(str(cmd).encode('utf-8'))
+
+
+
     def resetConfig(self):
         config = configparser.ConfigParser()
         config.sections()
         config.read_string(defaultConfig + "[oXs]")
         self.fillUi(config)        
 
-    #def sendSelectedCmdToOxs(self):
-    #    if not self.m_serial.isOpen():
-    #        dlg = QMessageBox(self)
-    #        dlg.setWindowTitle("Error!")
-    #        dlg.setText("No usb connection with oXs (click first connect on Usb commands tab)")
-    #        button = dlg.exec()
-    #        self.serialDisconnect()
-    #        return
-    #    self.m_serial.write((cmdCode[self.comboBoxSendSelectedCmdToOxs.currentIndex()] + "\r\n").encode('utf-8'))
+    def sendSelectedCmdToOxs(self):
+        if not self.m_serial.isOpen():
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Error!")
+            dlg.setText("No usb connection with oXs (click first connect on Usb commands tab)")
+            button = dlg.exec()
+            self.serialDisconnect()
+            return
+        self.m_serial.write((cmdCode[self.comboBoxSendSelectedCmdToOxs.currentIndex()] + "\r\n").encode('utf-8'))
 
     def loadConfigFromOxs(self):
         if not self.m_serial.isOpen():
@@ -351,31 +383,32 @@ class Ui(QtWidgets.QMainWindow):
             print("serial error occured")
          
             self.m_serial.close()
-            self.labelSerialStatus.setText("Disconnected")
-            self.pushButtonSerialDisconnect.setEnabled(False)
-            self.pushButtonSerialSend.setEnabled(False)
-            self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
-            self.pushButtonLoadConfigFromOxs.setEnabled(False)
-            self.pushButtonSerialConnect.setEnabled(True)
-
+            #self.labelSerialStatus.setText("Disconnected")
+            #self.pushButtonSerialDisconnect.setEnabled(False)
+            #self.pushButtonSerialSend.setEnabled(False)
+            ##self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
+            #self.pushButtonLoadConfigFromOxs.setEnabled(False)
+            #self.pushButtonSerialConnect.setEnabled(True)
+            self.changeIfConnected("Disconnected")
     
         if self.m_serial.isOpen():
             print("In handle error : serial is open")
-            self.labelSerialStatus.setText("Connected")
-            self.pushButtonSerialDisconnect.setEnabled(True)
-            self.pushButtonSerialSend.setEnabled(True)
-            self.pushButtonSendSelectedCmdToOxs.setEnabled(True)
-            self.pushButtonLoadConfigFromOxs.setEnabled(True)
-            self.pushButtonSerialConnect.setEnabled(False)
+            #self.labelSerialStatus.setText("Connected")
+            #self.pushButtonSerialDisconnect.setEnabled(True)
+            #self.pushButtonSerialSend.setEnabled(True)
+            ##self.pushButtonSendSelectedCmdToOxs.setEnabled(True)
+            #self.pushButtonLoadConfigFromOxs.setEnabled(True)
+            #self.pushButtonSerialConnect.setEnabled(False)
+            self.changeIfConnected("Connected")
         else:
             print("In handle error : serial is not open")
-            self.labelSerialStatus.setText("Disconnected")
-            self.pushButtonSerialDisconnect.setEnabled(False)
-            self.pushButtonSerialSend.setEnabled(False)
-            self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
-            self.pushButtonLoadConfigFromOxs.setEnabled(False)
-            self.pushButtonSerialConnect.setEnabled(True)
-    
+            #self.labelSerialStatus.setText("Disconnected")
+            #self.pushButtonSerialDisconnect.setEnabled(False)
+            #self.pushButtonSerialSend.setEnabled(False)
+            ##self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
+            #self.pushButtonLoadConfigFromOxs.setEnabled(False)
+            #self.pushButtonSerialConnect.setEnabled(True)
+            self.changeIfConnected("Disconnected")
     
     @pyqtSlot()
     # when there is a port, connect is enabled
@@ -442,12 +475,13 @@ class Ui(QtWidgets.QMainWindow):
         if self.m_serial.open(QIODeviceBase.OpenModeFlag.ReadWrite):
             self.m_serial.setDataTerminalReady(True)
             print("Serial is open")
-            self.labelSerialStatus.setText("Connected")
-            self.pushButtonSerialConnect.setEnabled(False)
-            self.pushButtonSerialDisconnect.setEnabled(True)
-            self.pushButtonSerialSend.setEnabled(True)
-            self.pushButtonSendSelectedCmdToOxs.setEnabled(True)
-            self.pushButtonLoadConfigFromOxs.setEnabled(True)
+            #self.labelSerialStatus.setText("Connected")
+            #self.pushButtonSerialConnect.setEnabled(False)
+            #self.pushButtonSerialDisconnect.setEnabled(True)
+            #self.pushButtonSerialSend.setEnabled(True)
+            ##self.pushButtonSendSelectedCmdToOxs.setEnabled(True)
+            #self.pushButtonLoadConfigFromOxs.setEnabled(True)
+            self.changeIfConnected("Connected")
         else:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error!")
@@ -459,15 +493,40 @@ class Ui(QtWidgets.QMainWindow):
     def serialDisconnect(self):
         if self.m_serial.isOpen():
             self.m_serial.close()
-        self.labelSerialStatus.setText("Disconnected")
-        self.pushButtonSerialConnect.setEnabled(True)
-        self.pushButtonSerialDisconnect.setEnabled(False)
-        self.pushButtonSerialSend.setEnabled(False)
-        self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
-        self.pushButtonLoadConfigFromOxs.setEnabled(False)
+        #self.labelSerialStatus.setText("Disconnected")
+        #self.pushButtonSerialConnect.setEnabled(True)
+        #self.pushButtonSerialDisconnect.setEnabled(False)
+        #self.pushButtonSerialSend.setEnabled(False)
+        ##self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
+        #self.pushButtonLoadConfigFromOxs.setEnabled(False)
+        self.changeIfConnected("Disconnected")
 
-    def saveConfigToOxs(self):
-        cmd = self.generateUsbCommand() + " ; SAVE\r\n"
+    def changeIfConnected(self, state):
+        if state == "Connected" :
+            self.labelSerialStatus.setText("Connected")
+            self.pushButtonSerialConnect.setEnabled(False)
+            self.pushButtonSerialDisconnect.setEnabled(True)
+            self.pushButtonSerialSend.setEnabled(True)
+            #self.pushButtonSendSelectedCmdToOxs.setEnabled(True)
+            self.pushButtonLoadConfigFromOxs.setEnabled(True)
+            self.pushButtonAskOxsToSave.setEnabled(True)
+            self.pushButtonGetOxsConfig.setEnabled(True)
+            self.pushButtonUploadConfigInOxs.setEnabled(True)
+            self.comboBoxSendSelectedCmdToOxs.setEnabled(True)
+        else:
+            self.labelSerialStatus.setText("Disconnected")
+            self.pushButtonSerialConnect.setEnabled(True)
+            self.pushButtonSerialDisconnect.setEnabled(False)
+            self.pushButtonSerialSend.setEnabled(False)
+            #self.pushButtonSendSelectedCmdToOxs.setEnabled(False)
+            self.pushButtonLoadConfigFromOxs.setEnabled(False)
+            self.pushButtonAskOxsToSave.setEnabled(False)
+            self.pushButtonGetOxsConfig.setEnabled(False)
+            self.pushButtonUploadConfigInOxs.setEnabled(False)
+            self.comboBoxSendSelectedCmdToOxs.setEnabled(False)
+
+    def uploadConfigInOxs(self):
+        cmd = self.generateUsbCommand() + " ; \r\n"
         if  not self.m_serial.isOpen():
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Error!")
@@ -477,13 +536,14 @@ class Ui(QtWidgets.QMainWindow):
             print("serial is closed while writing")
             return
         self.plainTextEditSerialToOxs.clear()
+        self.plainTextEditSerialFromOxs.clear()
         self.plainTextEditSerialToOxs.appendPlainText(cmd)
         self.m_serial.write(str(cmd).encode('utf-8'))
 
-    def createUsbCommand(self):
-        cmd = self.generateUsbCommand()
-        self.plainTextEditSerialToOxs.clear()
-        self.plainTextEditSerialToOxs.appendPlainText(cmd)
+    #def createUsbCommand(self):
+    #    cmd = self.generateUsbCommand()
+    #    self.plainTextEditSerialToOxs.clear()
+    #    self.plainTextEditSerialToOxs.appendPlainText(cmd)
 
     def generateUsbCommand(self):    
         cmd = "DEFAULT"

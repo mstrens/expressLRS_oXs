@@ -1,0 +1,1 @@
+pyinstaller --onefile --add-data oXs.ui;. --add-data rp2040.jpg;. app.py

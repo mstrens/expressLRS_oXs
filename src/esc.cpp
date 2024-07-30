@@ -47,6 +47,44 @@ Byte | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
 V4LV25/60/80A | 0x9B | 0x9B | 0x03 | 0xE8 | 0x01 | 0x08 | 0x5B | 0x00 | 0x01 | 0x00 | 0x21 | 0x21 | 0xB9
 */
 
+/*
+ * Hobbywing V5 Telemetry
+ *
+ *    - Serial protocol 115200,8N1
+ *    - Frame rate running:50Hz idle:2.5Hz
+ *    - Little-Endian fields
+ *    - Frame length over data (23)
+ *    - CRC16-MODBUS (poly 0x8005, init 0xffff)
+ *    - Fault code bits:
+ *         0:  Motor locked protection
+ *         1:  Over-temp protection
+ *         2:  Input throttle error at startup
+ *         3:  Throttle signal lost
+ *         4:  Over-current error
+ *         5:  Low-voltage error
+ *         6:  Input-voltage error
+ *         7:  Motor connection error
+ *
+ * Frame Format
+ * ――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+ *    0-5:      Sync header (0xFE 0x01 0x00 0x03 0x30 0x5C)
+ *      6:      Data frame length (23)
+ *    7-8:      Data type 0x06 0x00
+ *      9:      Throttle value in %
+ *  10-11:      Unknown
+ *     12:      Fault code
+ *  13-14:      RPM in 10rpm steps
+ *  15-16:      Voltage in 0.1V
+ *  17-18:      Current in 0.1A
+ *     19:      ESC Temperature in °C
+ *     20:      BEC Temperature in °C
+ *     21:      Motor Temperature in °C
+ *     22:      BEC Voltage in 0.1V
+ *     23:      BEC Current in 0.1A
+ *  24-29:      Unused 0xFF
+ *  30-31:      CRC16 MODBUS
+*/
+
 
 // ------ Kontronix ------------------------
 // ESC sent on uart (115200 8E1) a frame every 10 msec that contains
@@ -127,6 +165,13 @@ V4LV25/60/80A | 0x9B | 0x9B | 0x03 | 0xE8 | 0x01 | 0x08 | 0x5B | 0x00 | 0x01 | 0
 #define ESC_HOBBYV4_MAX_FRAME_LEN 19
 // interval = 20000 usec but 19 bytes at 19200 = nearly 10000usec 
 #define ESC_HOBBYV4_MIN_FREE_TIME_US 8000 // minimum interval without uart signal between 2 frames
+
+#define ESC_HOBBYV5_BAUDRATE 115200
+#define ESC_HOBBYV5_MAX_FRAME_LEN 32 // payload is only 23 but total frame is 32 bytes
+// interval = 20000 usec but 19 bytes at 19200 = nearly 10000usec 
+#define ESC_HOBBYV5_MIN_FREE_TIME_US 8000 // minimum interval without uart signal between 2 frames
+
+
 #define ESCHW4_NTC_BETA 3950.0
 #define ESCHW4_NTC_R1 10000.0
 #define ESCHW4_NTC_R_REF 47000.0
@@ -206,6 +251,9 @@ void setupEsc(){
     } else if ( config.escType == HW3) { 
         escMaxFrameLen = ESC_HOBBYV3_MAX_FRAME_LEN;
         escFreeTimeUs = ESC_HOBBYV4_MIN_FREE_TIME_US;
+    } else if ( config.escType == HW5) { 
+        escMaxFrameLen = ESC_HOBBYV5_MAX_FRAME_LEN;
+        escFreeTimeUs = ESC_HOBBYV5_MIN_FREE_TIME_US;
     } else if ( config.escType == KONTRONIK) { 
         escMaxFrameLen = ESC_KONTRONIK_MAX_FRAME_LEN;
         escFreeTimeUs = ESC_KONTRONIK_MIN_FREE_TIME_US;
@@ -233,6 +281,9 @@ void setupEsc(){
         escOffsetRx = pio_add_program(escPioRx, &esc_uart_rx_8N1_program);
         esc_uart_rx_8N1_program_init(escPioRx, escSmRx, escOffsetRx, config.pinEsc, ESC_HOBBYV4_BAUDRATE , false); // false = not inverted   
         //setupListMpxFieldsToReply();
+    } else if (config.escType == HW5){
+        escOffsetRx = pio_add_program(escPioRx, &esc_uart_rx_8N1_program);
+        esc_uart_rx_8N1_program_init(escPioRx, escSmRx, escOffsetRx, config.pinEsc, ESC_HOBBYV5_BAUDRATE , false); // false = not inverted   
     } else if (config.escType == KONTRONIK){
         escOffsetRx = pio_add_program(escPioRx, &esc_uart_rx_8E1_program);
         esc_uart_rx_8E1_program_init(escPioRx, escSmRx, escOffsetRx, config.pinEsc, ESC_KONTRONIK_BAUDRATE , false); // false = not inverted
@@ -389,6 +440,8 @@ void processEscFrame(){ // process the incoming byte (except the Jeti that is pr
     #endif
     if (config.escType == HW4) { // when frame is received for Hobbywing V4
         processHW4Frame();
+    } else if (config.escType == HW5) {
+        processHW5Frame();
     } else if (config.escType == KONTRONIK) {
         processKontronikFrame();
     } else if (config.escType == ZTW1) {
@@ -477,6 +530,66 @@ int32_t calcTemp(float tempRaw){
 
 void processHW3Frame(){
 
+}
+
+void processHW5Frame(){
+    if ((escRxBuffer[0] == 0xFE) and (escRxBuffer[1] == 0x01) and (escRxBuffer[2] == 0x00)\
+         and (escRxBuffer[3] == 0x03) and (escRxBuffer[4] == 0x30) and (escRxBuffer[5] == 0x5C)\
+         and (escRxBuffer[6] == 23)){   //0-5: Sync header (0xFE 0x01 0x00 0x03 0x30 0x5C), 66: Data frame length (23)
+        int throttle = escRxBuffer[9] ;
+        int rpm = escRxBuffer[13] << 8 | escRxBuffer[14];   //in 10 rpm steps
+        int voltage = escRxBuffer[15] << 8 | escRxBuffer[16]; // in 0.1V
+        int current = escRxBuffer[17] << 8 | escRxBuffer[18]; // in 0.1A
+        int tempFet = escRxBuffer[19]; // in °c
+        int tempBec = escRxBuffer[20]; // in °c
+        if (throttle < 101 ) {
+        //if (throttle >= 1024 || pwm >= 1024 || rpm >= 200000 || escRxBuffer[11] & 0xF0 ||\
+        //        escRxBuffer[13] & 0xF0 || escRxBuffer[15] & 0xF0 || escRxBuffer[17] & 0xF0 || escRxBuffer[1] == 0x9B)
+        //        // escRxBuffer[1] == 0x9B added by mstrens to perhaps avoid info frame; in principe LEN is different and so should already be omitted
+        //{
+        //}
+        //else 
+        //{
+            if (config.pinRpm == 255) { // when rpm pin is defined, we discard rpm from esc
+                sent2Core0( RPM,  (int32_t) ((float) rpm  *10 * config.rpmMultiplicator)) ; //Multiplicator should be 2/number of poles
+            }
+            // original formule = raw_voltage*(V_REF/ADC_RES)*V_DIV
+            //                  =            * 3300 /4096 * V_DIV with V_DIV = e.g. 12
+            if (config.pinVolt[0] == 255) { // when volt1 is defined, we discard voltage from esc
+                sent2Core0( MVOLT, (int32_t)  (( float) voltage *100.0 * config.scaleVolt1)) ; 
+            }
+            if (config.pinVolt[1] == 255) { 
+                float currentf = 0;
+                currentf = ((float)current) * 100.0 * config.scaleVolt2 - config.offset2;
+                if (currentf<0) currentf = 0;
+                if (currentf < ESC_MAX_CURRENT) { // discard when current is to high
+                    sent2Core0( CURRENT, (int32_t)  currentf) ; 
+                    // calculate consumption
+                    float interval = (float) (microsRp() - lastEscConsumedMicros);
+                    if ((interval >0 ) && (interval < 800000)) {
+                        escConsumedMah += currentf * interval / 3600000000.0 ;  // in mah.
+                        sent2Core0( CAPACITY, (int32_t) escConsumedMah);
+                    }    
+                    lastEscConsumedMicros =  microsRp(); 
+                }
+            }        
+            if ((config.pinVolt[2] == 255) or ((config.temperature != 1)  and (config.temperature != 2))){ //  we discard temp from esc
+                sent2Core0( TEMP1, tempFet) ;
+            }
+            if ((config.pinVolt[3] == 255) or (config.temperature != 2)){ //  we discard temp from esc
+                sent2Core0( TEMP2, tempBec) ;
+            }
+            
+            //printf("Esc throttle=%i   pwm=%i   Volt=%i  current=%i  consumed=%i  temp1=%i  temp2=%i\n", throttle , pwm , voltage , (int) current, (int) escConsumedMah , (int) tempFet , (int) tempBec );
+            
+            //throttle += ALPHA*(update_throttle(raw_throttle)-throttle);
+            //rpm += ALPHA*(update_rpm(raw_rpm)-rpm);
+            //pwm += ALPHA*(update_pwm(raw_pwm)-pwm);
+            //voltage += ALPHA*(update_voltage(raw_voltage)-voltage);
+            //current += ALPHA*(update_current(raw_current)-current);
+            //temperature += ALPHA*(update_temperature(raw_temperature)-temperature);
+        } 
+    }
 }
 
 void processKontronikFrame(){

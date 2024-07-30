@@ -7311,7 +7311,7 @@ p, li { white-space: pre-wrap; }
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>rp2040.jpg</pixmap>
+         <pixmap>../../../../Users/pc/.designer/backup/rp2040.jpg</pixmap>
         </property>
        </widget>
        <widget class="Line" name="line">
@@ -8447,14 +8447,14 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="geometry">
          <rect>
-          <x>530</x>
+          <x>610</x>
           <y>120</y>
-          <width>281</width>
-          <height>71</height>
+          <width>231</width>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Send cmd in edit field below to oXs</string>
+         <string>Send content of cmd box to oXs</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonSearchSerialPort">
@@ -8491,49 +8491,36 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="pushButtonClearSerialSend">
         <property name="geometry">
          <rect>
-          <x>840</x>
-          <y>140</y>
-          <width>231</width>
-          <height>28</height>
+          <x>930</x>
+          <y>120</y>
+          <width>131</width>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Clear manual cmd to send</string>
+         <string>Clear cmd box</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonClearSerialFromOxs">
         <property name="geometry">
          <rect>
           <x>900</x>
-          <y>290</y>
+          <y>260</y>
           <width>171</width>
-          <height>28</height>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
          <string>Clear msg from oXs</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButtonCreateUsbCommand">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>117</y>
-          <width>471</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Fill edit box with all usb commands based on current gui config</string>
-        </property>
-       </widget>
        <widget class="QPlainTextEdit" name="plainTextEditSerialFromOxs">
         <property name="geometry">
          <rect>
           <x>40</x>
-          <y>310</y>
+          <y>290</y>
           <width>1041</width>
-          <height>371</height>
+          <height>401</height>
          </rect>
         </property>
         <property name="font">
@@ -8551,8 +8538,8 @@ p, li { white-space: pre-wrap; }
        <widget class="QPlainTextEdit" name="plainTextEditSerialToOxs">
         <property name="geometry">
          <rect>
-          <x>30</x>
-          <y>200</y>
+          <x>40</x>
+          <y>150</y>
           <width>1041</width>
           <height>87</height>
          </rect>
@@ -8562,11 +8549,14 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
        <widget class="QComboBox" name="comboBoxSendSelectedCmdToOxs">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
-          <x>160</x>
-          <y>160</y>
-          <width>341</width>
+          <x>220</x>
+          <y>120</y>
+          <width>321</width>
           <height>31</height>
          </rect>
         </property>
@@ -8574,14 +8564,14 @@ p, li { white-space: pre-wrap; }
        <widget class="QLabel" name="label_20">
         <property name="geometry">
          <rect>
-          <x>-40</x>
-          <y>170</y>
+          <x>20</x>
+          <y>120</y>
           <width>191</width>
-          <height>16</height>
+          <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Copy a cmd to edit box</string>
+         <string>Select &amp; send a cmd for oXs</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8592,12 +8582,12 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>10</x>
           <y>70</y>
-          <width>171</width>
+          <width>161</width>
           <height>28</height>
          </rect>
         </property>
         <property name="text">
-         <string>Load config from pc</string>
+         <string>Load gui config from pc</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonLoadConfigFromOxs">
@@ -8606,66 +8596,101 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>180</x>
           <y>70</y>
-          <width>171</width>
+          <width>181</width>
           <height>28</height>
          </rect>
         </property>
         <property name="text">
-         <string>Load config from oXs</string>
+         <string>Load gui config from oXs</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonSaveAsConfig">
         <property name="geometry">
          <rect>
-          <x>410</x>
+          <x>370</x>
           <y>70</y>
           <width>151</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Save config to pc</string>
+         <string>Save gui config to pc</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButtonReset">
         <property name="geometry">
          <rect>
-          <x>930</x>
-          <y>70</y>
+          <x>910</x>
+          <y>20</y>
           <width>131</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Reset the config</string>
+         <string>Reset the gui config</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButtonSaveConfigToOxs">
+       <widget class="QPushButton" name="pushButtonUploadConfigInOxs">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
-          <x>580</x>
+          <x>530</x>
           <y>70</y>
-          <width>291</width>
+          <width>301</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Upload config to oXs (but not yet save it) </string>
+         <string>Upload gui config to oXs (but not yet save it) </string>
         </property>
        </widget>
        <widget class="QLabel" name="label_7">
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>300</y>
+          <y>260</y>
           <width>171</width>
           <height>16</height>
          </rect>
         </property>
         <property name="text">
          <string>Messages from oXs</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonGetOxsConfig">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>350</x>
+          <y>260</y>
+          <width>301</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Display current oXs setup in msg box</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButtonAskOxsToSave">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>850</x>
+          <y>70</y>
+          <width>211</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ask oXs to save his current setup</string>
         </property>
        </widget>
       </widget>

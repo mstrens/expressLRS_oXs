@@ -198,6 +198,7 @@ void printDebugFlags();
 
 #define HW4 4
 #define HW3 3
+#define HW5 7
 #define KONTRONIK 2
 #define ZTW1 1
 #define BLH 5

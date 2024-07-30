@@ -9,6 +9,7 @@ void processEscFrame();
 void escPioRxHandlerIrq();
 void processHW4Frame();
 void processHW3Frame();
+void processHW5Frame();
 void processKontronikFrame();
 void processZTW1Frame();
 void processBlhFrame();
