@@ -334,7 +334,7 @@ void handleEsc(){
     static bool pullupHW = false;
     if (config.pinEsc == 255) return ; // skip when esc is not foreseen
     // for hobbywing ESC, we have to activate the pullup only after 2 sec otherwise ESC do not start
-    if (config.escType == HW4) {
+    if ( (config.escType == HW4) or (config.escType == HW5) ){
         if ((pullupHW == false) and (millisRp() > 3000)) {
             gpio_pull_up(config.pinEsc);
             pullupHW = true;
