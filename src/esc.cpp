@@ -431,12 +431,14 @@ void processJetiboxEscFrame(){
 
 void processEscFrame(){ // process the incoming byte (except the Jeti that is procesed in another function) 
     //To debug the frame
-    //#define DEBUG_ESC_FRAME
+    #define DEBUG_ESC_FRAME
     #ifdef DEBUG_ESC_FRAME
-    for (uint8_t i=0; i< escMaxFrameLen ; i++){
-         printf("%2X ",escRxBuffer[i] );   
+    if (config.escType == HW5) {
+        for (uint8_t i=0; i< escMaxFrameLen ; i++){
+             printf("%2X ",escRxBuffer[i] );   
+        }
+        printf("\n");
     }
-    printf("\n");
     #endif
     if (config.escType == HW4) { // when frame is received for Hobbywing V4
         processHW4Frame();
@@ -531,18 +533,36 @@ int32_t calcTemp(float tempRaw){
 void processHW3Frame(){
 
 }
-
+/*
+*    0-5:      Sync header (0xFE 0x01 0x00 0x03 0x30 0x5C)
+ *      6:      Data frame length (23)
+ *    7-8:      Data type 0x06 0x00
+ *      9:      Throttle value in %
+ *  10-11:      Unknown
+ *     12:      Fault code
+ *  13-14:      RPM in 10rpm steps
+ *  15-16:      Voltage in 0.1V
+ *  17-18:      Current in 0.1A
+ *     19:      ESC Temperature in °C
+ *     20:      BEC Temperature in °C
+ *     21:      Motor Temperature in °C
+ *     22:      BEC Voltage in 0.1V
+ *     23:      BEC Current in 0.1A
+ *  24-29:      Unused 0xFF
+*/ 
 void processHW5Frame(){
     if ((escRxBuffer[0] == 0xFE) and (escRxBuffer[1] == 0x01) and (escRxBuffer[2] == 0x00)\
          and (escRxBuffer[3] == 0x03) and (escRxBuffer[4] == 0x30) and (escRxBuffer[5] == 0x5C)\
-         and (escRxBuffer[6] == 23)){   //0-5: Sync header (0xFE 0x01 0x00 0x03 0x30 0x5C), 66: Data frame length (23)
+         and (escRxBuffer[6] == 23) and (escRxBuffer[7] == 0x06) and (escRxBuffer[8] == 0)\
+         and (escRxBuffer[24] == 0xFF) and (escRxBuffer[25] == 0xFF) and (escRxBuffer[26] == 0xFF)\
+         and (escRxBuffer[27] == 0xFF) and (escRxBuffer[28] == 0xFF) and (escRxBuffer[29] == 0xFF)){   //0-5: Sync header (0xFE 0x01 0x00 0x03 0x30 0x5C), 66: Data frame length (23)
         int throttle = escRxBuffer[9] ;
-        int rpm = escRxBuffer[13] << 8 | escRxBuffer[14];   //in 10 rpm steps
-        int voltage = escRxBuffer[15] << 8 | escRxBuffer[16]; // in 0.1V
-        int current = escRxBuffer[17] << 8 | escRxBuffer[18]; // in 0.1A
+        int rpm = escRxBuffer[14] << 8 | escRxBuffer[13];   //in 10 rpm steps
+        int voltage = escRxBuffer[16] << 8 | escRxBuffer[15]; // in 0.1V
+        int current = escRxBuffer[18] << 8 | escRxBuffer[17]; // in 0.1A
         int tempFet = escRxBuffer[19]; // in °c
         int tempBec = escRxBuffer[20]; // in °c
-        if (throttle < 101 ) {
+        //if (throttle < 101 ) {
         //if (throttle >= 1024 || pwm >= 1024 || rpm >= 200000 || escRxBuffer[11] & 0xF0 ||\
         //        escRxBuffer[13] & 0xF0 || escRxBuffer[15] & 0xF0 || escRxBuffer[17] & 0xF0 || escRxBuffer[1] == 0x9B)
         //        // escRxBuffer[1] == 0x9B added by mstrens to perhaps avoid info frame; in principe LEN is different and so should already be omitted
@@ -588,7 +608,7 @@ void processHW5Frame(){
             //voltage += ALPHA*(update_voltage(raw_voltage)-voltage);
             //current += ALPHA*(update_current(raw_current)-current);
             //temperature += ALPHA*(update_temperature(raw_temperature)-temperature);
-        } 
+        //} 
     }
 }
 
