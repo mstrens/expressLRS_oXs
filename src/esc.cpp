@@ -431,9 +431,9 @@ void processJetiboxEscFrame(){
 
 void processEscFrame(){ // process the incoming byte (except the Jeti that is procesed in another function) 
     //To debug the frame
-    #define DEBUG_ESC_FRAME
+    //#define DEBUG_ESC_FRAME
     #ifdef DEBUG_ESC_FRAME
-    if (config.escType == HW5) {
+    if (config.escType == HW5) {  // added to debug only HW5
         for (uint8_t i=0; i< escMaxFrameLen ; i++){
              printf("%2X ",escRxBuffer[i] );   
         }
