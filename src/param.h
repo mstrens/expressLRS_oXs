@@ -109,6 +109,7 @@ void printFieldValues();
 void printPwmValues();
 
 void dumpConfig();
+void fillConfigWithDefault();
 
 // for sequencer
 #define SEQUENCER_VERSION 4

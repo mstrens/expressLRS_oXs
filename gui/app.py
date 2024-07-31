@@ -1,3 +1,5 @@
+version = "   (version 0.0.8)"
+
 import sys
 #this is needed to let pyinstaller include the data files used in the project (ui and jpg )
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
@@ -18,17 +20,12 @@ from serial.tools.list_ports import comports
 from PyQt6.QtCore import QIODeviceBase , QByteArray 
 from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot , QTimer
 
-version = "   (version 0.0.7)"
+
 
 # TO DO
 #add more checks ()
 #perform checks when command is generated and save is done
 #manage the case where usb is taken out when serial was already open
-#add layout for rc channels
-#add page for locator, logger, vcc, gnd ,gyro , rcchannels used to drive some functions
-#add serial commands (failsafe, ...)
-#add gps type
-#add the ability to upload the current config from oXs
 #PIDN = 500 0 500 500 0 500 500 0 500
 #PIDH = 500 500 500 500 500 500 500 500 500
 #PIDS = 500 0 500 500 0 500 500 0 500
@@ -38,8 +35,8 @@ BLANK_STRING = "N/A"
 #those table are used to convert text to code and vice versa
 protocolsCode = ["S","F","B","C","H","M","2","J","E","L","I"]
 protocolsName = ["Frsky (Sport)" , "Frsky (Fbus)" , "Frsky (Hub)" , "ELRS" ,"Hott" , "Multiplex" , "Futaba Sbus2", "Jeti (Bus)" , "Jeti (Exbus)", "Specktrum SRXL2", "Flysky Ibus"]
-escCode = ["HW4",  "BLH",  "JETI", "KON", "ZTW1"]
-escName = ["Hobbywing v4", "BlHeli", "Jeti" , "Kontronik" , "ZTW mantis"]
+escCode = ["HW4", "HW5" , "BLH",  "JETI", "KON", "ZTW1"]
+escName = ["Hobbywing v4", "Hobbywing v5" , "BlHeli", "Jeti" , "Kontronik" , "ZTW mantis"]
 gpsCode = ["U", "E", "C"]
 gpsName = ["Ublox configured by oXs", "Ublox configured Externally", "CADIS"]
 cmdCode = ["?", "DUMP", "SETFAILSAFE", "MPUCAL=A", "MPUCLA=C", "MPUORI=H", "MPUORI=V" , "FV", "FVP", "FVN", "PWM"]
@@ -166,7 +163,9 @@ GGT = Correction on full throw
 GMR = Medium
 GRE = Disabled
 GST = Stabilize mode ON (no Hold mode)
-
+PIDN = 500 0 500 500 0 500 500 0 500
+PIDH = 500 500 500 500 500 500 500 500 500
+PIDS = 500 0 500 500 0 500 500 0 500
 """
 
 
@@ -287,8 +286,7 @@ class Ui(QtWidgets.QMainWindow):
         #print(len(self.plainTextEditSerialFromOxs.toPlainText()))
         QTimer.singleShot(1000,self.endOfTimer) #endOfTimer will be called after 1000 msec; q loop is not blocked
     
-    def endOfTimer(self):
-        #process the reply to the DUMP command
+    def endOfTimer(self):         #process the reply to the DUMP command
         self.strToParse = self.plainTextEditSerialFromOxs.toPlainText()
         self.strToParse = self.strToParse.replace("; SCALE2","; \r\nSCALE2")
         self.strToParse = self.strToParse.replace("; SCALE3","; \r\nSCALE3")
@@ -501,7 +499,7 @@ class Ui(QtWidgets.QMainWindow):
         #self.pushButtonLoadConfigFromOxs.setEnabled(False)
         self.changeIfConnected("Disconnected")
 
-    def changeIfConnected(self, state):
+    def changeIfConnected(self, state):  #state says if the GUI must activate button or not depending on connected/disconnected
         if state == "Connected" :
             self.labelSerialStatus.setText("Connected")
             self.pushButtonSerialConnect.setEnabled(False)
@@ -637,6 +635,15 @@ class Ui(QtWidgets.QMainWindow):
             cmd += "; GMR =" + gyroMaxRotateCode[self.comboBoxGyroMaxRotate.currentIndex()]
             cmd += "; GRE =" + gyroStickRotateEnableCode[self.comboBoxGyroStickRotateEnable.currentIndex()]
             cmd += "; GST =" + gyroStabModeCode[self.comboBoxGyroStabMode.currentIndex()]
+            cmd += "; PIDN = " + str(self.sbPidNormalRollP.value()) + " " + str(self.sbPidNormalRollI.value()) + " " + str(self.sbPidNormalRollD.value())\
+                  + " " + str(self.sbPidNormalPitchP.value()) + " " + str(self.sbPidNormalPitchI.value()) + " " + str(self.sbPidNormalPitchD.value())\
+                  + " " + str(self.sbPidNormalYawP.value()) + " " + str(self.sbPidNormalYawI.value()) + " " + str(self.sbPidNormalYawD.value())
+            cmd += "; PIDH = " + str(self.sbPidHoldRollP.value()) + " " + str(self.sbPidHoldRollI.value()) + " " + str(self.sbPidHoldRollD.value())\
+                  + " " + str(self.sbPidHoldPitchP.value()) + " " + str(self.sbPidHoldPitchI.value()) + " " + str(self.sbPidHoldPitchD.value())\
+                  + " " + str(self.sbPidHoldYawP.value()) + " " + str(self.sbPidHoldYawI.value()) + " " + str(self.sbPidHoldYawD.value())
+            cmd += "; PIDS = " + str(self.sbPidStabRollP.value()) + " " + str(self.sbPidStabRollI.value()) + " " + str(self.sbPidStabRollD.value())\
+                  + " " + str(self.sbPidStabPitchP.value()) + " " + str(self.sbPidStabPitchI.value()) + " " + str(self.sbPidStabPitchD.value())\
+                  + " " + str(self.sbPidStabYawP.value()) + " " + str(self.sbPidStabYawI.value()) + " " + str(self.sbPidStabYawD.value())
 
         #print(cmd)
         return cmd
@@ -772,6 +779,43 @@ class Ui(QtWidgets.QMainWindow):
         self.comboBoxGyroStickRotateEnable.setCurrentText(config['oXs']['GRE'])
         self.comboBoxGyroStabMode.setCurrentText(config['oXs']['GST'])
         
+        pid = config['oXs']['pidn'] # pidn contains 9 values separated by spaces
+        pidInt = x = list(map(int, pid.split()))
+        self.sbPidNormalRollP.setValue(pidInt[0])
+        self.sbPidNormalRollI.setValue(pidInt[1])
+        self.sbPidNormalRollD.setValue(pidInt[2])
+        self.sbPidNormalPitchP.setValue(pidInt[3])
+        self.sbPidNormalPitchI.setValue(pidInt[4])
+        self.sbPidNormalPitchD.setValue(pidInt[5])
+        self.sbPidNormalYawP.setValue(pidInt[6])
+        self.sbPidNormalYawI.setValue(pidInt[7])
+        self.sbPidNormalYawD.setValue(pidInt[8])
+        pid = config['oXs']['pidh'] # pidn contains 9 values separated by spaces
+        pidInt = x = list(map(int, pid.split()))
+        self.sbPidHoldRollP.setValue(pidInt[0])
+        self.sbPidHoldRollI.setValue(pidInt[1])
+        self.sbPidHoldRollD.setValue(pidInt[2])
+        self.sbPidHoldPitchP.setValue(pidInt[3])
+        self.sbPidHoldPitchI.setValue(pidInt[4])
+        self.sbPidHoldPitchD.setValue(pidInt[5])
+        self.sbPidHoldYawP.setValue(pidInt[6])
+        self.sbPidHoldYawI.setValue(pidInt[7])
+        self.sbPidHoldYawD.setValue(pidInt[8])
+        pid = config['oXs']['pids'] # pidn contains 9 values separated by spaces
+        pidInt = x = list(map(int, pid.split()))
+        self.sbPidStabRollP.setValue(pidInt[0])
+        self.sbPidStabRollI.setValue(pidInt[1])
+        self.sbPidStabRollD.setValue(pidInt[2])
+        self.sbPidStabPitchP.setValue(pidInt[3])
+        self.sbPidStabPitchI.setValue(pidInt[4])
+        self.sbPidStabPitchD.setValue(pidInt[5])
+        self.sbPidStabYawP.setValue(pidInt[6])
+        self.sbPidStabYawI.setValue(pidInt[7])
+        self.sbPidStabYawD.setValue(pidInt[8])
+        
+        
+        print(pid)
+        print(pidInt[0])
 
 
     def saveConfigToPc(self): #save the ui in a .ini file
@@ -908,7 +952,16 @@ class Ui(QtWidgets.QMainWindow):
             ms['GMR'] = self.comboBoxGyroMaxRotate.currentText()
             ms['GRE'] = self.comboBoxGyroStickRotateEnable.currentText()
             ms['GST'] = self.comboBoxGyroStabMode.currentText()
- 
+            ms['PIDN'] = str(self.sbPidNormalRollP.value()) + " " + str(self.sbPidNormalRollI.value()) + " " + str(self.sbPidNormalRollD.value())\
+                  + " " + str(self.sbPidNormalPitchP.value()) + " " + str(self.sbPidNormalPitchI.value()) + " " + str(self.sbPidNormalPitchD.value())\
+                  + " " + str(self.sbPidNormalYawP.value()) + " " + str(self.sbPidNormalYawI.value()) + " " + str(self.sbPidNormalYawD.value())
+            ms['PIDH'] = str(self.sbPidHoldRollP.value()) + " " + str(self.sbPidHoldRollI.value()) + " " + str(self.sbPidHoldRollD.value())\
+                  + " " + str(self.sbPidHoldPitchP.value()) + " " + str(self.sbPidHoldPitchI.value()) + " " + str(self.sbPidHoldPitchD.value())\
+                  + " " + str(self.sbPidHoldYawP.value()) + " " + str(self.sbPidHoldYawI.value()) + " " + str(self.sbPidHoldYawD.value())
+            ms['PIDS'] = str(self.sbPidStabRollP.value()) + " " + str(self.sbPidStabRollI.value()) + " " + str(self.sbPidStabRollD.value())\
+                  + " " + str(self.sbPidStabPitchP.value()) + " " + str(self.sbPidStabPitchI.value()) + " " + str(self.sbPidStabPitchD.value())\
+                  + " " + str(self.sbPidStabYawP.value()) + " " + str(self.sbPidStabYawI.value()) + " " + str(self.sbPidStabYawD.value())
+
             with open(fileName[0], 'w') as configfile:
                 config.write(configfile)
             

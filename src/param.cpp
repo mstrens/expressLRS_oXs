@@ -1323,6 +1323,13 @@ int8_t handleOneCmd( char * bufferPos){ // handle one command with buffer starti
         }
     }
 
+    // restore default
+    if ( strcmp("DEFAULT", pkey) == 0 ) { 
+        fillConfigWithDefault();
+        printf("Config has been restored with default values from config.h\n" );
+        return 1;
+    }
+
     // get Sequencer definition
     if ( strcmp("SEQ", pkey) == 0 ) { 
         if (strcmp("DEL", pvalue) == 0) {
@@ -1961,6 +1968,150 @@ void removeTrailingWhiteSpace( char * str)
 		*cp-- = '\0';
 }
 
+void fillConfigWithDefault(){
+    config.version = CONFIG_VERSION;
+    config.pinChannels[0] = _pinChannels_1;
+    config.pinChannels[1] = _pinChannels_2;
+    config.pinChannels[2] = _pinChannels_3;
+    config.pinChannels[3] = _pinChannels_4;
+    config.pinChannels[4] = _pinChannels_5;
+    config.pinChannels[5] = _pinChannels_6;
+    config.pinChannels[6] = _pinChannels_7;
+    config.pinChannels[7] = _pinChannels_8;
+    config.pinChannels[8] = _pinChannels_9;
+    config.pinChannels[9] = _pinChannels_10;
+    config.pinChannels[10] = _pinChannels_11;
+    config.pinChannels[11] = _pinChannels_12;
+    config.pinChannels[12] = _pinChannels_13;
+    config.pinChannels[13] = _pinChannels_14;
+    config.pinChannels[14] = _pinChannels_15;
+    config.pinChannels[15] = _pinChannels_16;
+    config.pinGpsTx = _pinGpsTx;
+    config.pinGpsRx = _pinGpsRx;
+    config.pinPrimIn = _pinPrimIn;
+    config.pinSecIn = _pinSecIn; 
+    config.pinSbusOut = _pinSbusOut;
+    config.pinTlm = _pinTlm;
+    config.pinVolt[0] = _pinVolt_1;
+    config.pinVolt[1] = _pinVolt_2;
+    config.pinVolt[2] = _pinVolt_3;
+    config.pinVolt[3] = _pinVolt_4;
+    config.pinSda = _pinSda;
+    config.pinScl = _pinScl;
+    config.pinRpm = _pinRpm;
+    config.pinLed = _pinLed;
+    config.protocol = _protocol; // default = sport
+    config.crsfBaudrate = _crsfBaudrate;
+    config.scaleVolt1 = _scaleVolt1;
+    config.scaleVolt2 = _scaleVolt2;
+    config.scaleVolt3 = _scaleVolt3;
+    config.scaleVolt4 = _scaleVolt4;
+    config.offset1 = _offset1;
+    config.offset2 = _offset2;
+    config.offset3 = _offset3;
+    config.offset4 = _offset4;
+    config.gpsType = _gpsType ;
+    config.rpmMultiplicator = _rpmMultiplicator;
+    //config.gpio0 = 0;
+    //config.gpio1 = 1;
+    //config.gpio5 = 6;
+    //config.gpio11 = 11;
+    config.failsafeType = _failsafeType;
+    config.failsafeChannels.ch0 = 1<<10 ; // set default failsafe value to 1/2 of 11 bits
+    config.failsafeChannels.ch1 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch2 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch3 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch4 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch6 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch6 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch7 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch8 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch9 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch10 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch11 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch12 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch13 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch14 = config.failsafeChannels.ch0 ;
+    config.failsafeChannels.ch15 = config.failsafeChannels.ch0 ;
+    config.accOffsetX = 0;
+    config.accOffsetY = 0;
+    config.accOffsetZ = 0;
+    config.gyroOffsetX = 0;
+    config.gyroOffsetY = 0;
+    config.gyroOffsetZ= 0;
+    config.temperature = _temperature;
+    config.VspeedCompChannel = _VspeedCompChannel;
+    config.ledInverted = _ledInverted; 
+    config.pinLogger = _pinLogger;
+    config.loggerBaudrate =_loggerBaudrate;
+    config.pinEsc = _pinEsc ;
+    config.escType = _escType; 
+    config.pwmHz = _pwmHz;
+    config.gyroChanControl = _gyroChanControl ; // Rc channel used to say if gyro is implemented or not and to select the mode and the general gain. Value must be in range 1/16 or 255 (no gyro)
+    config.gyroChan[0] = _gyroChan_AIL;
+    config.gyroChan[1] = _gyroChan_ELV;
+    config.gyroChan[2] = _gyroChan_RUD;
+    config.vr_gain[0]  = _vr_gain_AIL;
+    config.vr_gain[1]  = _vr_gain_ELV;
+    config.vr_gain[2]  = _vr_gain_RUD;
+    config.stick_gain_throw = (enum STICK_GAIN_THROW)_stick_gain_throw;
+    config.max_rotate = (MAX_ROTATE)_max_rotate;
+    config.rate_mode_stick_rotate = (enum RATE_MODE_STICK_ROTATE)_rate_mode_stick_rotate;
+    config.gyroAutolevel = _gyroAutolevel;
+    config.mpuOrientationH = _mpuOrientationH;
+    config.mpuOrientationV = _mpuOrientationV;
+    config.pid_param_rate.output_shift = _pid_param_rate_output_shift;
+    config.pid_param_hold.output_shift = _pid_param_hold_output_shift;
+    config.pid_param_stab.output_shift = _pid_param_stab_output_shift;
+    config.pid_param_rate.kp[0] =  _pid_param_rate_KP_AIL;
+    config.pid_param_rate.kp[1] =  _pid_param_rate_KP_ELV;
+    config.pid_param_rate.kp[2] =  _pid_param_rate_KP_RUD;
+    config.pid_param_hold.kp[0] =  _pid_param_hold_KP_AIL;
+    config.pid_param_hold.kp[1] =  _pid_param_hold_KP_ELV;
+    config.pid_param_hold.kp[2] =  _pid_param_hold_KP_RUD;
+    config.pid_param_stab.kp[0] =  _pid_param_stab_KP_AIL;
+    config.pid_param_stab.kp[1] =  _pid_param_stab_KP_ELV;
+    config.pid_param_stab.kp[2] =  _pid_param_stab_KP_RUD;
+        
+    config.pid_param_rate.ki[0] =  _pid_param_rate_KI_AIL;
+    config.pid_param_rate.ki[1] =  _pid_param_rate_KI_ELV;
+    config.pid_param_rate.ki[2] =  _pid_param_rate_KI_RUD;
+    config.pid_param_hold.ki[0] =  _pid_param_hold_KI_AIL;
+    config.pid_param_hold.ki[1] =  _pid_param_hold_KI_ELV;
+    config.pid_param_hold.ki[2] =  _pid_param_hold_KI_RUD;
+    config.pid_param_stab.ki[0] =  _pid_param_stab_KI_AIL;
+    config.pid_param_stab.ki[1] =  _pid_param_stab_KI_ELV;
+    config.pid_param_stab.ki[2] =  _pid_param_stab_KI_RUD;
+    
+    config.pid_param_rate.kd[0] =  _pid_param_rate_KD_AIL;
+    config.pid_param_rate.kd[1] =  _pid_param_rate_KD_ELV;
+    config.pid_param_rate.kd[2] =  _pid_param_rate_KD_RUD;
+    config.pid_param_hold.kd[0] =  _pid_param_hold_KD_AIL;
+    config.pid_param_hold.kd[1] =  _pid_param_hold_KD_ELV;
+    config.pid_param_hold.kd[2] =  _pid_param_hold_KD_RUD;
+    config.pid_param_stab.kd[0] =  _pid_param_stab_KD_AIL;
+    config.pid_param_stab.kd[1] =  _pid_param_stab_KD_ELV;
+    config.pid_param_stab.kd[2] =  _pid_param_stab_KD_RUD;
+
+    config.pinSpiCs = _pinSpiCs;
+    config.pinSpiSck = _pinSpiSck;
+    config.pinSpiMosi = _pinSpiMosi;
+    config.pinSpiMiso = _pinSpiMiso;
+    config.pinE220Busy = _pinE220Busy;
+
+    config.accOffX = _accOffX;
+    config.accOffY = _accOffY;
+    config.accOffZ = _accOffZ;
+    config.accScaleXX = _accScaleXX;
+    config.accScaleYY = _accScaleYY;
+    config.accScaleZZ = _accScaleZZ;
+    config.accScaleXY = _accScaleXY;
+    config.accScaleXZ = _accScaleXZ;
+    config.accScaleYZ = _accScaleYZ;
+
+    config.pinHigh = _pinHigh;
+    config.pinLow = _pinLow;
+}
 void setupConfig(){   // The config is uploaded at power on
     if (*flash_target_contents == CONFIG_VERSION ) {
         memcpy( &config , flash_target_contents, sizeof(config));
@@ -1986,148 +2137,7 @@ void setupConfig(){   // The config is uploaded at power on
         config.pid_param_stab.output_shift = _pid_param_stab_output_shift;
         
     } else {
-        config.version = CONFIG_VERSION;
-        config.pinChannels[0] = _pinChannels_1;
-        config.pinChannels[1] = _pinChannels_2;
-        config.pinChannels[2] = _pinChannels_3;
-        config.pinChannels[3] = _pinChannels_4;
-        config.pinChannels[4] = _pinChannels_5;
-        config.pinChannels[5] = _pinChannels_6;
-        config.pinChannels[6] = _pinChannels_7;
-        config.pinChannels[7] = _pinChannels_8;
-        config.pinChannels[8] = _pinChannels_9;
-        config.pinChannels[9] = _pinChannels_10;
-        config.pinChannels[10] = _pinChannels_11;
-        config.pinChannels[11] = _pinChannels_12;
-        config.pinChannels[12] = _pinChannels_13;
-        config.pinChannels[13] = _pinChannels_14;
-        config.pinChannels[14] = _pinChannels_15;
-        config.pinChannels[15] = _pinChannels_16;
-        config.pinGpsTx = _pinGpsTx;
-        config.pinGpsRx = _pinGpsRx;
-        config.pinPrimIn = _pinPrimIn;
-        config.pinSecIn = _pinSecIn; 
-        config.pinSbusOut = _pinSbusOut;
-        config.pinTlm = _pinTlm;
-        config.pinVolt[0] = _pinVolt_1;
-        config.pinVolt[1] = _pinVolt_2;
-        config.pinVolt[2] = _pinVolt_3;
-        config.pinVolt[3] = _pinVolt_4;
-        config.pinSda = _pinSda;
-        config.pinScl = _pinScl;
-        config.pinRpm = _pinRpm;
-        config.pinLed = _pinLed;
-        config.protocol = _protocol; // default = sport
-        config.crsfBaudrate = _crsfBaudrate;
-        config.scaleVolt1 = _scaleVolt1;
-        config.scaleVolt2 = _scaleVolt2;
-        config.scaleVolt3 = _scaleVolt3;
-        config.scaleVolt4 = _scaleVolt4;
-        config.offset1 = _offset1;
-        config.offset2 = _offset2;
-        config.offset3 = _offset3;
-        config.offset4 = _offset4;
-        config.gpsType = _gpsType ;
-        config.rpmMultiplicator = _rpmMultiplicator;
-        //config.gpio0 = 0;
-        //config.gpio1 = 1;
-        //config.gpio5 = 6;
-        //config.gpio11 = 11;
-        config.failsafeType = _failsafeType;
-        config.failsafeChannels.ch0 = 1<<10 ; // set default failsafe value to 1/2 of 11 bits
-        config.failsafeChannels.ch1 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch2 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch3 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch4 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch6 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch6 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch7 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch8 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch9 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch10 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch11 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch12 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch13 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch14 = config.failsafeChannels.ch0 ;
-        config.failsafeChannels.ch15 = config.failsafeChannels.ch0 ;
-        config.accOffsetX = 0;
-        config.accOffsetY = 0;
-        config.accOffsetZ = 0;
-        config.gyroOffsetX = 0;
-        config.gyroOffsetY = 0;
-        config.gyroOffsetZ= 0;
-        config.temperature = _temperature;
-        config.VspeedCompChannel = _VspeedCompChannel;
-        config.ledInverted = _ledInverted; 
-        config.pinLogger = _pinLogger;
-        config.loggerBaudrate =_loggerBaudrate;
-        config.pinEsc = _pinEsc ;
-        config.escType = _escType; 
-        config.pwmHz = _pwmHz;
-        config.gyroChanControl = _gyroChanControl ; // Rc channel used to say if gyro is implemented or not and to select the mode and the general gain. Value must be in range 1/16 or 255 (no gyro)
-        config.gyroChan[0] = _gyroChan_AIL;
-        config.gyroChan[1] = _gyroChan_ELV;
-        config.gyroChan[2] = _gyroChan_RUD;
-        config.vr_gain[0]  = _vr_gain_AIL;
-        config.vr_gain[1]  = _vr_gain_ELV;
-        config.vr_gain[2]  = _vr_gain_RUD;
-        config.stick_gain_throw = (enum STICK_GAIN_THROW)_stick_gain_throw;
-        config.max_rotate = (MAX_ROTATE)_max_rotate;
-        config.rate_mode_stick_rotate = (enum RATE_MODE_STICK_ROTATE)_rate_mode_stick_rotate;
-        config.gyroAutolevel = _gyroAutolevel;
-        config.mpuOrientationH = _mpuOrientationH;
-        config.mpuOrientationV = _mpuOrientationV;
-        config.pid_param_rate.output_shift = _pid_param_rate_output_shift;
-        config.pid_param_hold.output_shift = _pid_param_hold_output_shift;
-        config.pid_param_stab.output_shift = _pid_param_stab_output_shift;
-        config.pid_param_rate.kp[0] =  _pid_param_rate_KP_AIL;
-        config.pid_param_rate.kp[1] =  _pid_param_rate_KP_ELV;
-        config.pid_param_rate.kp[2] =  _pid_param_rate_KP_RUD;
-        config.pid_param_hold.kp[0] =  _pid_param_hold_KP_AIL;
-        config.pid_param_hold.kp[1] =  _pid_param_hold_KP_ELV;
-        config.pid_param_hold.kp[2] =  _pid_param_hold_KP_RUD;
-        config.pid_param_stab.kp[0] =  _pid_param_stab_KP_AIL;
-        config.pid_param_stab.kp[1] =  _pid_param_stab_KP_ELV;
-        config.pid_param_stab.kp[2] =  _pid_param_stab_KP_RUD;
-            
-        config.pid_param_rate.ki[0] =  _pid_param_rate_KI_AIL;
-        config.pid_param_rate.ki[1] =  _pid_param_rate_KI_ELV;
-        config.pid_param_rate.ki[2] =  _pid_param_rate_KI_RUD;
-        config.pid_param_hold.ki[0] =  _pid_param_hold_KI_AIL;
-        config.pid_param_hold.ki[1] =  _pid_param_hold_KI_ELV;
-        config.pid_param_hold.ki[2] =  _pid_param_hold_KI_RUD;
-        config.pid_param_stab.ki[0] =  _pid_param_stab_KI_AIL;
-        config.pid_param_stab.ki[1] =  _pid_param_stab_KI_ELV;
-        config.pid_param_stab.ki[2] =  _pid_param_stab_KI_RUD;
-        
-        config.pid_param_rate.kd[0] =  _pid_param_rate_KD_AIL;
-        config.pid_param_rate.kd[1] =  _pid_param_rate_KD_ELV;
-        config.pid_param_rate.kd[2] =  _pid_param_rate_KD_RUD;
-        config.pid_param_hold.kd[0] =  _pid_param_hold_KD_AIL;
-        config.pid_param_hold.kd[1] =  _pid_param_hold_KD_ELV;
-        config.pid_param_hold.kd[2] =  _pid_param_hold_KD_RUD;
-        config.pid_param_stab.kd[0] =  _pid_param_stab_KD_AIL;
-        config.pid_param_stab.kd[1] =  _pid_param_stab_KD_ELV;
-        config.pid_param_stab.kd[2] =  _pid_param_stab_KD_RUD;
-
-        config.pinSpiCs = _pinSpiCs;
-        config.pinSpiSck = _pinSpiSck;
-        config.pinSpiMosi = _pinSpiMosi;
-        config.pinSpiMiso = _pinSpiMiso;
-        config.pinE220Busy = _pinE220Busy;
-
-        config.accOffX = _accOffX;
-        config.accOffY = _accOffY;
-        config.accOffZ = _accOffZ;
-        config.accScaleXX = _accScaleXX;
-        config.accScaleYY = _accScaleYY;
-        config.accScaleZZ = _accScaleZZ;
-        config.accScaleXY = _accScaleXY;
-        config.accScaleXZ = _accScaleXZ;
-        config.accScaleYZ = _accScaleYZ;
-
-        config.pinHigh = _pinHigh;
-        config.pinLow = _pinLow;
+        fillConfigWithDefault();
     }
             
 } 

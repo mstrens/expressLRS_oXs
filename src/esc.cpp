@@ -597,7 +597,9 @@ void processHW5Frame(){
                 sent2Core0( TEMP1, tempFet) ;
             }
             if ((config.pinVolt[3] == 255) or (config.temperature != 2)){ //  we discard temp from esc
-                sent2Core0( TEMP2, tempBec) ;
+                if (tempBec != 255) {
+                    sent2Core0( TEMP2, tempBec) ;
+                }    
             }
             
             //printf("Esc throttle=%i   pwm=%i   Volt=%i  current=%i  consumed=%i  temp1=%i  temp2=%i\n", throttle , pwm , voltage , (int) current, (int) escConsumedMah , (int) tempFet , (int) tempBec );

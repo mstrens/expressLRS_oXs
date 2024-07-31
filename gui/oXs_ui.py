@@ -16,10 +16,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
-    QFrame, QGroupBox, QHBoxLayout, QLabel,
-    QLayout, QMainWindow, QMenuBar, QPlainTextEdit,
-    QPushButton, QSizePolicy, QSpinBox, QStatusBar,
-    QTabWidget, QTextEdit, QVBoxLayout, QWidget)
+    QFrame, QGridLayout, QGroupBox, QHBoxLayout,
+    QLabel, QLayout, QMainWindow, QMenuBar,
+    QPlainTextEdit, QPushButton, QSizePolicy, QSpinBox,
+    QStatusBar, QTabWidget, QTextEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -106,7 +107,11 @@ class Ui_MainWindow(object):
         self.tab.setObjectName(u"tab")
         self.textEdit = QTextEdit(self.tab)
         self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setGeometry(QRect(60, 60, 991, 521))
+        self.textEdit.setGeometry(QRect(60, 60, 991, 431))
+        font1 = QFont()
+        font1.setPointSize(12)
+        self.textEdit.setFont(font1)
+        self.textEdit.setReadOnly(True)
         self.tabWidget.addTab(self.tab, "")
         self.receiverTab = QWidget()
         self.receiverTab.setObjectName(u"receiverTab")
@@ -1665,6 +1670,279 @@ class Ui_MainWindow(object):
         self.comboBoxGyroStabMode.setObjectName(u"comboBoxGyroStabMode")
         self.comboBoxGyroStabMode.setEnabled(False)
         self.comboBoxGyroStabMode.setGeometry(QRect(760, 220, 251, 22))
+        self.widget = QWidget(self.tab_6)
+        self.widget.setObjectName(u"widget")
+        self.widget.setGeometry(QRect(100, 260, 501, 281))
+        self.gridLayout = QGridLayout(self.widget)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.label_60 = QLabel(self.widget)
+        self.label_60.setObjectName(u"label_60")
+
+        self.gridLayout.addWidget(self.label_60, 0, 2, 1, 1)
+
+        self.label_61 = QLabel(self.widget)
+        self.label_61.setObjectName(u"label_61")
+
+        self.gridLayout.addWidget(self.label_61, 0, 3, 1, 1)
+
+        self.label_62 = QLabel(self.widget)
+        self.label_62.setObjectName(u"label_62")
+
+        self.gridLayout.addWidget(self.label_62, 0, 4, 1, 1)
+
+        self.label_18 = QLabel(self.widget)
+        self.label_18.setObjectName(u"label_18")
+
+        self.gridLayout.addWidget(self.label_18, 1, 0, 1, 1)
+
+        self.label_51 = QLabel(self.widget)
+        self.label_51.setObjectName(u"label_51")
+        self.label_51.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_51, 1, 1, 1, 1)
+
+        self.sbPidNormalRollP = QSpinBox(self.widget)
+        self.sbPidNormalRollP.setObjectName(u"sbPidNormalRollP")
+        self.sbPidNormalRollP.setMaximum(2000)
+        self.sbPidNormalRollP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidNormalRollP, 1, 2, 1, 1)
+
+        self.sbPidNormalRollI = QSpinBox(self.widget)
+        self.sbPidNormalRollI.setObjectName(u"sbPidNormalRollI")
+        self.sbPidNormalRollI.setMaximum(2000)
+
+        self.gridLayout.addWidget(self.sbPidNormalRollI, 1, 3, 1, 1)
+
+        self.sbPidNormalRollD = QSpinBox(self.widget)
+        self.sbPidNormalRollD.setObjectName(u"sbPidNormalRollD")
+        self.sbPidNormalRollD.setMaximum(2000)
+        self.sbPidNormalRollD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidNormalRollD, 1, 4, 1, 1)
+
+        self.label_52 = QLabel(self.widget)
+        self.label_52.setObjectName(u"label_52")
+        self.label_52.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_52, 2, 1, 1, 1)
+
+        self.sbPidNormalPitchP = QSpinBox(self.widget)
+        self.sbPidNormalPitchP.setObjectName(u"sbPidNormalPitchP")
+        self.sbPidNormalPitchP.setMaximum(2000)
+        self.sbPidNormalPitchP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidNormalPitchP, 2, 2, 1, 1)
+
+        self.sbPidNormalPitchI = QSpinBox(self.widget)
+        self.sbPidNormalPitchI.setObjectName(u"sbPidNormalPitchI")
+        self.sbPidNormalPitchI.setMaximum(2000)
+
+        self.gridLayout.addWidget(self.sbPidNormalPitchI, 2, 3, 1, 1)
+
+        self.sbPidNormalPitchD = QSpinBox(self.widget)
+        self.sbPidNormalPitchD.setObjectName(u"sbPidNormalPitchD")
+        self.sbPidNormalPitchD.setMaximum(2000)
+        self.sbPidNormalPitchD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidNormalPitchD, 2, 4, 1, 1)
+
+        self.label_53 = QLabel(self.widget)
+        self.label_53.setObjectName(u"label_53")
+        self.label_53.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_53, 3, 1, 1, 1)
+
+        self.sbPidNormalYawP = QSpinBox(self.widget)
+        self.sbPidNormalYawP.setObjectName(u"sbPidNormalYawP")
+        self.sbPidNormalYawP.setMaximum(2000)
+        self.sbPidNormalYawP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidNormalYawP, 3, 2, 1, 1)
+
+        self.sbPidNormalYawI = QSpinBox(self.widget)
+        self.sbPidNormalYawI.setObjectName(u"sbPidNormalYawI")
+        self.sbPidNormalYawI.setMaximum(2000)
+
+        self.gridLayout.addWidget(self.sbPidNormalYawI, 3, 3, 1, 1)
+
+        self.sbPidNormalYawD = QSpinBox(self.widget)
+        self.sbPidNormalYawD.setObjectName(u"sbPidNormalYawD")
+        self.sbPidNormalYawD.setMaximum(2000)
+        self.sbPidNormalYawD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidNormalYawD, 3, 4, 1, 1)
+
+        self.label_49 = QLabel(self.widget)
+        self.label_49.setObjectName(u"label_49")
+
+        self.gridLayout.addWidget(self.label_49, 4, 0, 1, 1)
+
+        self.label_54 = QLabel(self.widget)
+        self.label_54.setObjectName(u"label_54")
+        self.label_54.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_54, 4, 1, 1, 1)
+
+        self.sbPidHoldRollP = QSpinBox(self.widget)
+        self.sbPidHoldRollP.setObjectName(u"sbPidHoldRollP")
+        self.sbPidHoldRollP.setMaximum(2000)
+        self.sbPidHoldRollP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldRollP, 4, 2, 1, 1)
+
+        self.sbPidHoldRollI = QSpinBox(self.widget)
+        self.sbPidHoldRollI.setObjectName(u"sbPidHoldRollI")
+        self.sbPidHoldRollI.setMaximum(2000)
+        self.sbPidHoldRollI.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldRollI, 4, 3, 1, 1)
+
+        self.sbPidHoldRollD = QSpinBox(self.widget)
+        self.sbPidHoldRollD.setObjectName(u"sbPidHoldRollD")
+        self.sbPidHoldRollD.setMaximum(2000)
+        self.sbPidHoldRollD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldRollD, 4, 4, 1, 1)
+
+        self.label_56 = QLabel(self.widget)
+        self.label_56.setObjectName(u"label_56")
+        self.label_56.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_56, 5, 1, 1, 1)
+
+        self.sbPidHoldPitchP = QSpinBox(self.widget)
+        self.sbPidHoldPitchP.setObjectName(u"sbPidHoldPitchP")
+        self.sbPidHoldPitchP.setMaximum(2000)
+        self.sbPidHoldPitchP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldPitchP, 5, 2, 1, 1)
+
+        self.sbPidHoldPitchI = QSpinBox(self.widget)
+        self.sbPidHoldPitchI.setObjectName(u"sbPidHoldPitchI")
+        self.sbPidHoldPitchI.setMaximum(2000)
+        self.sbPidHoldPitchI.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldPitchI, 5, 3, 1, 1)
+
+        self.sbPidHoldPitchD = QSpinBox(self.widget)
+        self.sbPidHoldPitchD.setObjectName(u"sbPidHoldPitchD")
+        self.sbPidHoldPitchD.setMaximum(2000)
+        self.sbPidHoldPitchD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldPitchD, 5, 4, 1, 1)
+
+        self.label_55 = QLabel(self.widget)
+        self.label_55.setObjectName(u"label_55")
+        self.label_55.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_55, 6, 1, 1, 1)
+
+        self.sbPidHoldYawP = QSpinBox(self.widget)
+        self.sbPidHoldYawP.setObjectName(u"sbPidHoldYawP")
+        self.sbPidHoldYawP.setMaximum(2000)
+        self.sbPidHoldYawP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldYawP, 6, 2, 1, 1)
+
+        self.sbPidHoldYawI = QSpinBox(self.widget)
+        self.sbPidHoldYawI.setObjectName(u"sbPidHoldYawI")
+        self.sbPidHoldYawI.setMaximum(2000)
+        self.sbPidHoldYawI.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldYawI, 6, 3, 1, 1)
+
+        self.sbPidHoldYawD = QSpinBox(self.widget)
+        self.sbPidHoldYawD.setObjectName(u"sbPidHoldYawD")
+        self.sbPidHoldYawD.setMaximum(2000)
+        self.sbPidHoldYawD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidHoldYawD, 6, 4, 1, 1)
+
+        self.label_50 = QLabel(self.widget)
+        self.label_50.setObjectName(u"label_50")
+
+        self.gridLayout.addWidget(self.label_50, 7, 0, 1, 1)
+
+        self.label_58 = QLabel(self.widget)
+        self.label_58.setObjectName(u"label_58")
+        self.label_58.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_58, 7, 1, 1, 1)
+
+        self.sbPidStabRollP = QSpinBox(self.widget)
+        self.sbPidStabRollP.setObjectName(u"sbPidStabRollP")
+        self.sbPidStabRollP.setMaximum(2000)
+        self.sbPidStabRollP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidStabRollP, 7, 2, 1, 1)
+
+        self.sbPidStabRollI = QSpinBox(self.widget)
+        self.sbPidStabRollI.setObjectName(u"sbPidStabRollI")
+        self.sbPidStabRollI.setMaximum(2000)
+
+        self.gridLayout.addWidget(self.sbPidStabRollI, 7, 3, 1, 1)
+
+        self.sbPidStabRollD = QSpinBox(self.widget)
+        self.sbPidStabRollD.setObjectName(u"sbPidStabRollD")
+        self.sbPidStabRollD.setMaximum(2000)
+        self.sbPidStabRollD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidStabRollD, 7, 4, 1, 1)
+
+        self.label_59 = QLabel(self.widget)
+        self.label_59.setObjectName(u"label_59")
+        self.label_59.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_59, 8, 1, 1, 1)
+
+        self.sbPidStabPitchP = QSpinBox(self.widget)
+        self.sbPidStabPitchP.setObjectName(u"sbPidStabPitchP")
+        self.sbPidStabPitchP.setMaximum(2000)
+        self.sbPidStabPitchP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidStabPitchP, 8, 2, 1, 1)
+
+        self.sbPidStabPitchI = QSpinBox(self.widget)
+        self.sbPidStabPitchI.setObjectName(u"sbPidStabPitchI")
+        self.sbPidStabPitchI.setMaximum(2000)
+
+        self.gridLayout.addWidget(self.sbPidStabPitchI, 8, 3, 1, 1)
+
+        self.sbPidStabPitchD = QSpinBox(self.widget)
+        self.sbPidStabPitchD.setObjectName(u"sbPidStabPitchD")
+        self.sbPidStabPitchD.setMaximum(2000)
+        self.sbPidStabPitchD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidStabPitchD, 8, 4, 1, 1)
+
+        self.label_57 = QLabel(self.widget)
+        self.label_57.setObjectName(u"label_57")
+        self.label_57.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label_57, 9, 1, 1, 1)
+
+        self.sbPidStabYawP = QSpinBox(self.widget)
+        self.sbPidStabYawP.setObjectName(u"sbPidStabYawP")
+        self.sbPidStabYawP.setMaximum(2000)
+        self.sbPidStabYawP.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidStabYawP, 9, 2, 1, 1)
+
+        self.sbPidStabYawI = QSpinBox(self.widget)
+        self.sbPidStabYawI.setObjectName(u"sbPidStabYawI")
+        self.sbPidStabYawI.setMaximum(2000)
+
+        self.gridLayout.addWidget(self.sbPidStabYawI, 9, 3, 1, 1)
+
+        self.sbPidStabYawD = QSpinBox(self.widget)
+        self.sbPidStabYawD.setObjectName(u"sbPidStabYawD")
+        self.sbPidStabYawD.setMaximum(2000)
+        self.sbPidStabYawD.setValue(500)
+
+        self.gridLayout.addWidget(self.sbPidStabYawD, 9, 4, 1, 1)
+
         self.tabWidget.addTab(self.tab_6, "")
         self.tab_4 = QWidget()
         self.tab_4.setObjectName(u"tab_4")
@@ -2038,8 +2316,6 @@ class Ui_MainWindow(object):
         self.labelSerialStatus = QLabel(self.UsbCommands)
         self.labelSerialStatus.setObjectName(u"labelSerialStatus")
         self.labelSerialStatus.setGeometry(QRect(540, 30, 131, 16))
-        font1 = QFont()
-        font1.setPointSize(12)
         self.labelSerialStatus.setFont(font1)
         self.pushButtonClearSerialSend = QPushButton(self.UsbCommands)
         self.pushButtonClearSerialSend.setObjectName(u"pushButtonClearSerialSend")
@@ -2173,7 +2449,7 @@ class Ui_MainWindow(object):
         self.cbGrnd.toggled.connect(self.comboBoxGrnd.setEnabled)
         self.cbSbusOut.toggled.connect(self.comboBoxSbusOut.setEnabled)
 
-        self.tabWidget.setCurrentIndex(8)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2184,9 +2460,27 @@ class Ui_MainWindow(object):
         self.textEdit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Times New Roman'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Here there shoud be some text providing explanations</p></body></html>", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Config", None))
+"</style></head><body style=\" font-family:'Times New Roman'; font-size:12pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This program can be used to manage the setup of oXs_on_rp2040 devices with a graphical user interface (gui).</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It allows to:</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- define a configur"
+                        "ation on the pc (except the sequencer section)</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- save it in a file on your pc</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- reload a saved configuration from your pc</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- reset the gui configuration to default values</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- show the functions assigned to the gpio's of rp2040  </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- establish a connection with an oXs device via the USB and then</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;"
+                        " -qt-block-indent:0; text-indent:0px;\">- load in the pc the setup from an oXs device</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- upload a config defined on the pc into an oXs device</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- send predefined (drop list) of manual entered commands to an oXs device</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- ask an oXs device to save (store) his own actual setup </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">- display actual setup of an oXs device (and eventual setup errors)</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+""
+                        "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">This program allows to manage oXs devices without another serial/usb terminal. </p></body></html>", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Readme", None))
         self.protocolName.setText(QCoreApplication.translate("MainWindow", u"Protocol", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Sbus (output)", None))
         self.cbSbusOut.setText("")
@@ -2856,6 +3150,21 @@ class Ui_MainWindow(object):
         self.label_43.setText(QCoreApplication.translate("MainWindow", u"Max Rotate", None))
         self.label_44.setText(QCoreApplication.translate("MainWindow", u"Stick rotate enable", None))
         self.label_45.setText(QCoreApplication.translate("MainWindow", u"Use stabilize or hold mode", None))
+        self.label_60.setText(QCoreApplication.translate("MainWindow", u"P (proportional)", None))
+        self.label_61.setText(QCoreApplication.translate("MainWindow", u"I (integral)", None))
+        self.label_62.setText(QCoreApplication.translate("MainWindow", u"D (differentiall)", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"PID for NORMAL mode", None))
+        self.label_51.setText(QCoreApplication.translate("MainWindow", u"Roll", None))
+        self.label_52.setText(QCoreApplication.translate("MainWindow", u"Pitch", None))
+        self.label_53.setText(QCoreApplication.translate("MainWindow", u"Yaw", None))
+        self.label_49.setText(QCoreApplication.translate("MainWindow", u"PID for HOLD mode", None))
+        self.label_54.setText(QCoreApplication.translate("MainWindow", u"Roll", None))
+        self.label_56.setText(QCoreApplication.translate("MainWindow", u"Pitch", None))
+        self.label_55.setText(QCoreApplication.translate("MainWindow", u"Yaw", None))
+        self.label_50.setText(QCoreApplication.translate("MainWindow", u"PID for STABILIZE mode", None))
+        self.label_58.setText(QCoreApplication.translate("MainWindow", u"Roll", None))
+        self.label_59.setText(QCoreApplication.translate("MainWindow", u"Pitch", None))
+        self.label_57.setText(QCoreApplication.translate("MainWindow", u"Yaw", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_6), QCoreApplication.translate("MainWindow", u"Gyro", None))
         self.lbGpio0.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.lbGpio1.setText(QCoreApplication.translate("MainWindow", u"1", None))
@@ -3049,7 +3358,7 @@ class Ui_MainWindow(object):
         self.pushButtonClearSerialFromOxs.setText(QCoreApplication.translate("MainWindow", u"Clear msg from oXs", None))
         self.plainTextEditSerialFromOxs.setPlainText("")
         self.plainTextEditSerialToOxs.setPlainText("")
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Select & send a cmd for oXs", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Send selected cmd to oXs", None))
         self.pushButtonLoadConfig.setText(QCoreApplication.translate("MainWindow", u"Load gui config from pc", None))
         self.pushButtonLoadConfigFromOxs.setText(QCoreApplication.translate("MainWindow", u"Load gui config from oXs", None))
         self.pushButtonSaveAsConfig.setText(QCoreApplication.translate("MainWindow", u"Save gui config to pc", None))
