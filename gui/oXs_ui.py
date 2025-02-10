@@ -2322,10 +2322,10 @@ class Ui_MainWindow(object):
         self.pushButtonClearSerialSend.setGeometry(QRect(930, 120, 131, 31))
         self.pushButtonClearSerialFromOxs = QPushButton(self.UsbCommands)
         self.pushButtonClearSerialFromOxs.setObjectName(u"pushButtonClearSerialFromOxs")
-        self.pushButtonClearSerialFromOxs.setGeometry(QRect(900, 260, 171, 31))
+        self.pushButtonClearSerialFromOxs.setGeometry(QRect(900, 250, 171, 31))
         self.plainTextEditSerialFromOxs = QPlainTextEdit(self.UsbCommands)
         self.plainTextEditSerialFromOxs.setObjectName(u"plainTextEditSerialFromOxs")
-        self.plainTextEditSerialFromOxs.setGeometry(QRect(40, 290, 1041, 401))
+        self.plainTextEditSerialFromOxs.setGeometry(QRect(50, 280, 1041, 401))
         font2 = QFont()
         font2.setFamilies([u"Courier New"])
         self.plainTextEditSerialFromOxs.setFont(font2)
@@ -2364,7 +2364,7 @@ class Ui_MainWindow(object):
         self.pushButtonGetOxsConfig = QPushButton(self.UsbCommands)
         self.pushButtonGetOxsConfig.setObjectName(u"pushButtonGetOxsConfig")
         self.pushButtonGetOxsConfig.setEnabled(False)
-        self.pushButtonGetOxsConfig.setGeometry(QRect(350, 260, 301, 31))
+        self.pushButtonGetOxsConfig.setGeometry(QRect(350, 250, 301, 31))
         self.pushButtonAskOxsToSave = QPushButton(self.UsbCommands)
         self.pushButtonAskOxsToSave.setObjectName(u"pushButtonAskOxsToSave")
         self.pushButtonAskOxsToSave.setEnabled(False)
@@ -2448,8 +2448,9 @@ class Ui_MainWindow(object):
         self.cbVcc.toggled.connect(self.comboBoxVcc.setEnabled)
         self.cbGrnd.toggled.connect(self.comboBoxGrnd.setEnabled)
         self.cbSbusOut.toggled.connect(self.comboBoxSbusOut.setEnabled)
+        self.plainTextEditSerialFromOxs.textChanged.connect(self.plainTextEditSerialFromOxs.setFocus)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(8)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

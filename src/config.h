@@ -3,7 +3,7 @@
 #include <stdint.h>
 #define VERSION "3.0.11"
 
-//#define DEBUG  // force the MCU to wait for some time for the USB connection; still continue if not connected
+#define DEBUG  // force the MCU to wait for some time for the USB connection; still continue if not connected
 
 // Here some additional parameters that can't be changed via the serial terminal 
 
@@ -36,7 +36,6 @@
 // There is no need to set the value to 0 for fields not available (e.g. for GPS fields if GPS pins are undefined)
 // Note : currently some fields are never transmitted in exbus protocol (even if they have a valid value here)
 //        For more details about the fields, look at the file doc/fields_per_protocol.txt 
-
 
 #define P_LATITUDE             50
 #define P_LONGITUDE            50
@@ -83,7 +82,6 @@
 #define P_RESERVE5            200
 #define P_RESERVE6            200
 #define P_RESERVE7            200
-
 
 // -------------- for ELRS protocol  ------------------------------
 #define VOLTAGE_FRAME_INTERVAL 500 // This version transmit only one voltage; it could be change in the future

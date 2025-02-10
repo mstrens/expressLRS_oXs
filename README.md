@@ -209,7 +209,9 @@ If you just want to use it, there is (in most cases) no need to install/use any 
 
 Developers can change the firmware, compile and flash it with VScode and Rapsberry SDK tools.  
 An easy way to install those tools is to follow the tutorials provided by Rapsberry.  
-In particular for Windows there is currently an installer. See : https://github.com/raspberrypi/pico-setup-windows/blob/master/docs/tutorial.md
+For Windows there was an installer. See : https://github.com/raspberrypi/pico-setup-windows/blob/master/docs/tutorial.md
+Still I think the best way currently would first to install Visual Studio Code (VS Code). There are many tuto on theweb.
+And then to install (inside VS Code) the extension named "Raspberry Pi Pico"
 
 Once the tools are installed, copy all files provided on github on you PC (keeping the same structure).  
 Open VScode and then select menu "File" + item "Open Folder". Select the folder where you copied the files.  

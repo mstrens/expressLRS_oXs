@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "config.h"
 #include "hardware/i2c.h"
+#include "hardware/clocks.h"
 #include "MS5611.h"
 #include "SPL06.h"
 #include "BMP280.h"

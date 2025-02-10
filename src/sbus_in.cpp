@@ -96,7 +96,7 @@ void on_sbus2_uart_rx() {
 
 
 uint uart_init_extended(uart_inst_t *uart, uint baudrate , uint data_bits, uint stop_bits, uart_parity_t parity, bool fifoEnabled) {
-    invalid_params_if(UART, uart != uart0 && uart != uart1);
+    //invalid_params_if(UART, uart != uart0 && uart != uart1);
 
     if (clock_get_hz(clk_peri) == 0)
         return 0;

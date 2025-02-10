@@ -308,17 +308,30 @@ int32_t negFieldValues[] = {
         
 };
 // fill all fields with dummy values (useful to test a protocol)
- void fillFields( uint8_t forcedFields){
+static uint32_t lastDebugGpsAvailable = 0;
+                
+void fillFields( uint8_t forcedFields){
     //printf("entering fillFields wi,th %d\n", forcedFields);
     if (forcedFields == 1)  {   // force positive values
+        #define DEDBUG_GPS_EXBUS
+        #ifdef DEDBUG_GPS_EXBUS
+        if ((millisRp() - lastDebugGpsAvailable) > 100){
+            lastDebugGpsAvailable = millisRp();
+            for (uint8_t i = 0; i <  (sizeof(posFieldValues)/sizeof(*posFieldValues)) ; i++){
+                if ((i<=5) or (i==36)) {        
+                    fields[i].value = posFieldValues[i];
+                    fields[i].available = true;
+                    fields[i].onceAvailable = true;
+                }    
+            }
+        }
+        #else
         for (uint8_t i = 0; i <  (sizeof(posFieldValues)/sizeof(*posFieldValues)) ; i++){
-        //for (uint8_t i = 0; i <  6 ; i++){
-        
             fields[i].value = posFieldValues[i];
             fields[i].available = true;
             fields[i].onceAvailable = true;
-            //printf("filling for %d\n", i);
         }
+        #endif
     }
     if (forcedFields == 2)  {   // force negative values
         for (uint8_t i = 0; i <  (sizeof(negFieldValues)/sizeof(*negFieldValues)) ; i++){
@@ -327,7 +340,7 @@ int32_t negFieldValues[] = {
             fields[i].onceAvailable = true; 
         }
     }
- }
+}
 
 uint16_t swapBinary(uint16_t value) {
     return (value >> 8) | (value << 8);

@@ -478,7 +478,7 @@
        <enum>Qt::LeftToRight</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>8</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -8924,7 +8924,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>900</x>
-          <y>260</y>
+          <y>250</y>
           <width>171</width>
           <height>31</height>
          </rect>
@@ -8936,8 +8936,8 @@ p, li { white-space: pre-wrap; }
        <widget class="QPlainTextEdit" name="plainTextEditSerialFromOxs">
         <property name="geometry">
          <rect>
-          <x>40</x>
-          <y>290</y>
+          <x>50</x>
+          <y>280</y>
           <width>1041</width>
           <height>401</height>
          </rect>
@@ -9087,7 +9087,7 @@ p, li { white-space: pre-wrap; }
         <property name="geometry">
          <rect>
           <x>350</x>
-          <y>260</y>
+          <y>250</y>
           <width>301</width>
           <height>31</height>
          </rect>
@@ -10168,6 +10168,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>656</x>
      <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plainTextEditSerialFromOxs</sender>
+   <signal>textChanged()</signal>
+   <receiver>plainTextEditSerialFromOxs</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>389</x>
+     <y>402</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>757</x>
+     <y>402</y>
     </hint>
    </hints>
   </connection>

@@ -26,9 +26,7 @@ from PyQt6.QtCore import Qt, pyqtSignal, pyqtSlot , QTimer
 #add more checks ()
 #perform checks when command is generated and save is done
 #manage the case where usb is taken out when serial was already open
-#PIDN = 500 0 500 500 0 500 500 0 500
-#PIDH = 500 500 500 500 500 500 500 500 500
-#PIDS = 500 0 500 500 0 500 500 0 500
+# In the box with msg from oXs, set the focus on the last line whe new line are added
 
 BLANK_STRING = "N/A"
 
@@ -194,6 +192,8 @@ class Ui(QtWidgets.QMainWindow):
         self.pushButtonAskOxsToSave.clicked.connect(self.askOxsToSave)
         self.pushButtonGetOxsConfig.clicked.connect(self.getOxsConfig)
 
+        self.plainTextEditSerialFromOxs.textChanged.connect(self.setCursorAtEnd)
+
         self.m_serial = QSerialPort(self)
         self.m_serial.errorOccurred.connect(self.handle_error)
         self.m_serial.readyRead.connect(self.read_data)   
@@ -219,6 +219,10 @@ class Ui(QtWidgets.QMainWindow):
         # set the title
         self.setWindowTitle("Graphical user interface for oXs on RP2040 " + version)
         self.show()
+
+    def setCursorAtEnd(self):
+        #print("setCursor is called")
+        self.plainTextEditSerialFromOxs.verticalScrollBar().setValue(100000)
 
     def fillEditWithCmd(self, index):
         self.plainTextEditSerialToOxs.clear()
