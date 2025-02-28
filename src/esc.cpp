@@ -432,6 +432,7 @@ void processHW4Frame(){
             if (config.pinVolt[1] == 255) { 
                 float currentf = 0;
                 currentf = ((float)current) * config.scaleVolt2 - config.offset2;
+				if (((float)current) * 100.0 * config.scaleVolt2 <= 0) currentf = 0;
                 if (currentf<0) currentf = 0;
                 if (currentf < ESC_MAX_CURRENT) { // discard when current is to high
                     sent2Core0( CURRENT, (int32_t)  currentf) ; 
